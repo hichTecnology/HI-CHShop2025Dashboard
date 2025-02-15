@@ -16,12 +16,12 @@ const withAuth = (WrappedComponent: React.FC) => {
         return;
       }
 
-      /*try {
+      try {
         jwt.verify(token, SECRET_KEY);
       } catch (err) {
         localStorage.removeItem('token');
         router.push('/login');
-      }*/
+      }
     }, [router]);
 
     return <WrappedComponent {...props} />;
