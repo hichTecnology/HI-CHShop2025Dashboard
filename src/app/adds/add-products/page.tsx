@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ModalError from "@/components/Modal/ModalError";
 import apiUrl from '@/app/api/apiUrl'
+import withAuth from "@/components/withAuth";
 
 
 
@@ -75,7 +76,7 @@ type SearchParamProps = {
   searchParams: Record<string, string> | null | undefined;
 };
 
-const FormElementsPage =   ({ searchParams }: SearchParamProps)=> {
+const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
   const show = searchParams?.show;
   const showSize = searchParams?.showSize;
   const showVariente = searchParams?.showVariente;
@@ -684,4 +685,4 @@ const FormElementsPage =   ({ searchParams }: SearchParamProps)=> {
   );
 };
 
-export default FormElementsPage;
+export default withAuth(FormElementsPage) ;

@@ -17,6 +17,7 @@ import AddTag from "@/components/Form/AddTag";
 
 import ModalAllTag from "@/components/Modal/ModalAllTag";
 import ModalMessage from "@/components/Modal/ModalMessage";
+import withAuth from "@/components/withAuth";
 
 
 type SearchParamProps = {
@@ -236,4 +237,4 @@ const FormLayout = ({ searchParams }: SearchParamProps) => {
   );
 };
 
-export default FormLayout;
+export default withAuth(FormLayout) ;

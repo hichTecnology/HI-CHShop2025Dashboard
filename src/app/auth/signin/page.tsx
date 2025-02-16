@@ -12,13 +12,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GoogleSigninButton from "@/components/Auth/GoogleSigninButton";
 import SigninWithPassword from "@/components/Auth/SigninWithPassword";
+import ModalError from "@/components/Modal/ModalError";
+import Loader from "@/components/common/Loader";
 
-
-const SignIn: React.FC = () => {
+type SearchParamProps = {
+  searchParams: Record<string, string> | null | undefined;
+};
+const SignIn = ({ searchParams }: SearchParamProps) => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [check, setCheck] = useState<boolean>(false);
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const showError = searchParams?.showError;
   
   const schemaCategory = z.object({
     email : z
@@ -35,7 +40,7 @@ const SignIn: React.FC = () => {
       resolver : zodResolver(schemaCategory)
     })
   const onSubmit :SubmitHandler<IssinUp> = async (variente) => {
-    
+    setCheck(true)
     const Item = {
       email : variente.email,
       password : variente.password,
@@ -53,14 +58,18 @@ const SignIn: React.FC = () => {
       const data = await response.json();
 
       if (response.status == 200) {
+        setCheck(false)
         localStorage.setItem('token', data.access_token); // Salva il token nel localStorage
         localStorage.setItem('id', data.id);// Salva il id nel localStorage
         router.push('/'); // Reindirizza al dashboard
       } else {
-        setError(data.message);
-        console.log('ce un errore')
+        setCheck(false)
+        setError('Login failed. Please try again.');
+        router.push('/auth/signin/?showError=true')
       }
     } catch (error) {
+      setCheck(false)
+      console.log('Login failed. Please try again.')
       setError('Login failed. Please try again.');
     }
   };
@@ -69,11 +78,12 @@ const SignIn: React.FC = () => {
   return (
   <div className=" p-8">
     <Breadcrumb pageName="Sign In" />
+    {showError && <ModalError message={error} link="/adds/add-products"/>}
     <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
     <div className="flex flex-wrap items-center">
       <div className="w-full xl:w-1/2">
         <div className="w-full p-4 sm:p-12.5 xl:p-15">
-          <div>
+          {check ?<Loader/>:<div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
               <label
@@ -156,7 +166,7 @@ const SignIn: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-6 flex items-center justify-between gap-2 py-2">
+      {/*<div className="mb-6 flex items-center justify-between gap-2 py-2">
         <label
           htmlFor="remember"
           className="flex cursor-pointer select-none items-center font-satoshi text-base font-medium text-dark dark:text-white"
@@ -194,9 +204,10 @@ const SignIn: React.FC = () => {
         >
           Forgot Password?
         </Link>
-      </div>
+      </div>*/}
 
       <div className="mb-4.5">
+        
         <button
           type="submit"
           className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
@@ -205,15 +216,15 @@ const SignIn: React.FC = () => {
         </button>
       </div>
     </form>
-          </div>
-          <div className="mt-6 text-center">
+          </div>}
+          {/*<div className="mt-6 text-center">
             <p>
               Don’t have any account?{" "}
               <Link href="/auth/signup" className="text-primary">
                 Sign Up
               </Link>
             </p>
-          </div>
+          </div>*/}
         </div>
       </div>
       <div className="hidden w-full p-7.5 xl:block xl:w-1/2">

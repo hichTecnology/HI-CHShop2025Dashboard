@@ -3,6 +3,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import SettingBoxes from "@/components/SettingBoxes";
+import withAuth from "@/components/withAuth";
 
 export const metadata: Metadata = {
   title: "Next.js Settings Page | NextAdmin - Next.js Dashboard c",
@@ -21,4 +22,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default withAuth(Settings) ;

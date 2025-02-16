@@ -2,6 +2,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import ProfileBox from "@/components/ProfileBox";
+import withAuth from "@/components/withAuth";
 
 export const metadata: Metadata = {
   title: "Next.js Profile Page | NextAdmin - Next.js Dashboard Kit",
@@ -20,4 +21,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuth(Profile);

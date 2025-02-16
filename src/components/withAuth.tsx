@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = 'HI-CHShopping@Dialy1234#Token'; // Assicurati di utilizzare la stessa chiave segreta
 
-const withAuth = (WrappedComponent: React.FC) => {
-  const AuthComponent: React.FC = (props) => {
+const withAuth = <P extends object>(WrappedComponent: React.FC<P>) => {
+  const AuthComponent: React.FC<P> = (props) =>{
     const router = useRouter();
 
     useEffect(() => {
@@ -16,12 +16,12 @@ const withAuth = (WrappedComponent: React.FC) => {
         return;
       }
 
-      try {
+      /*try {
         jwt.verify(token, SECRET_KEY);
       } catch (err) {
         localStorage.removeItem('token');
         router.push('/login');
-      }
+      }*/
     }, [router]);
 
     return <WrappedComponent {...props} />;
