@@ -47,10 +47,11 @@ const SignIn = ({ searchParams }: SearchParamProps) => {
       password : variente.password,
       
     }
+    console.log(Item)
     try {
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
-        mode: 'no-cors',
+        
         headers: {
           'Content-Type': 'application/json',
           
