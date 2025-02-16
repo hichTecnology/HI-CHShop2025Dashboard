@@ -14,6 +14,7 @@ import GoogleSigninButton from "@/components/Auth/GoogleSigninButton";
 import SigninWithPassword from "@/components/Auth/SigninWithPassword";
 import ModalError from "@/components/Modal/ModalError";
 import Loader from "@/components/common/Loader";
+import apiUrl from '@/app/api/apiUrl'
 
 type SearchParamProps = {
   searchParams: Record<string, string> | null | undefined;
@@ -47,7 +48,7 @@ const SignIn = ({ searchParams }: SearchParamProps) => {
       
     }
     try {
-      const response = await fetch('https://hi-chshop2025-nestjs.onrender.com/auth/login', {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ const SignIn = ({ searchParams }: SearchParamProps) => {
   return (
   <div className=" p-8">
     <Breadcrumb pageName="Sign In" />
-    {showError && <ModalError message={error} link="/adds/add-products"/>}
+    {showError && <ModalError message={error} link="/auth/signin"/>}
     <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
     <div className="flex flex-wrap items-center">
       <div className="w-full xl:w-1/2">
