@@ -33,6 +33,7 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
         const requestBody = JSON.stringify(size);
         const response = await fetch(`${apiUrl}/sizes`, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body:requestBody
         })

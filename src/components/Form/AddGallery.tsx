@@ -25,6 +25,7 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
       const requestBody = JSON.stringify(Gallery);
       const response = await fetch(`${apiUrl}/product-medias`, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body:requestBody
       })

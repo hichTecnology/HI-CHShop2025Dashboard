@@ -57,6 +57,7 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
               const requestBody = JSON.stringify(sale);
               const response = await fetch(`${apiUrl}/sales`, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body:requestBody
               })

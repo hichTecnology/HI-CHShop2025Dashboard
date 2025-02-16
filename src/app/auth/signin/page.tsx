@@ -50,8 +50,10 @@ const SignIn = ({ searchParams }: SearchParamProps) => {
     try {
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
+          
         },
         body: JSON.stringify(Item),
       });

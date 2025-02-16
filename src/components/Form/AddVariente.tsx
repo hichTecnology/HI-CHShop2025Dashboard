@@ -55,6 +55,7 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
               const requestBody = JSON.stringify(categoryItem);
               const response = await fetch(`${apiUrl}/varientes`, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body:requestBody
               })

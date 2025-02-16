@@ -227,6 +227,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
             const requestBody = JSON.stringify(categoryItem);
             const response = await fetch(`${apiUrl}/products`, {
               method: 'POST',
+              mode: 'no-cors',
               headers: { 'Content-Type': 'application/json' },
               body:requestBody
             })
