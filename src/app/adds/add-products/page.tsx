@@ -78,13 +78,13 @@ type SearchParamProps = {
 
 const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
   const show = searchParams?.show;
-  const showSize = searchParams?.showSize;
+  const [showSize,setShowSize] = useState<boolean>(false);
   const showVariente = searchParams?.showVariente;
   const showSale = searchParams?.showSale;
   const showSGallery = searchParams?.showGallery;
   const showError = searchParams?.showError;
   const showMessage = searchParams?.showMessage;
-  
+  console.log(show)
     const [resource, setResource] = useState<string | null>();
     const [message, setMessage] = useState<string>('Error ...');
     const [resources, setResources] = useState<string[]|null >([]);
@@ -249,7 +249,15 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         }
         
       }
-    
+      useEffect(() =>{
+        console.log(showMessage)
+        if (showMessage === 'true') {
+          setShowSize(true);
+        } else {
+          setShowSize(false);
+        }
+
+      },[showMessage])
         useEffect(() =>{
           const fetchColor = async () => {
             try {
@@ -495,13 +503,14 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
             </div>
               <MultiSelectSize removeSize={removeSize}  id="multiSelect1" sizes={sizes} sendSizeToParent={handleSizeFromChild}  />
-              <ButtonDefault
+              
+             { <ButtonDefault
               label="Size "
-              link="/adds/add-products/?showSize=true"
+              link="/adds/add-products/?showMessage=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
-              <VscAdd/>
-            </ButtonDefault>
+              
+            </ButtonDefault>}
             </div>
         </div>
         {/* <!-- Variente --> */}
