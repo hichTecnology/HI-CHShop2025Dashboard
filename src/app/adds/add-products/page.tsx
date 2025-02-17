@@ -20,7 +20,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AddGallery from "@/components/Form/AddGallery";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter ,useSearchParams } from "next/navigation";
 import ModalError from "@/components/Modal/ModalError";
 import apiUrl from '@/app/api/apiUrl'
 import withAuth from "@/components/withAuth";
@@ -77,14 +77,17 @@ type SearchParamProps = {
 };
 
 const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
-  const show = searchParams?.show;
+  const searchParam = useSearchParams()
+  const show = searchParam.get('show')
+  console.log(show)
+  //const show = searchParams?.show;
   const [showSize,setShowSize] = useState<boolean>(false);
   const showVariente = searchParams?.showVariente;
   const showSale = searchParams?.showSale;
   const showSGallery = searchParams?.showGallery;
   const showError = searchParams?.showError;
   const showMessage = searchParams?.showMessage;
-  console.log(show)
+  
     const [resource, setResource] = useState<string | null>();
     const [message, setMessage] = useState<string>('Error ...');
     const [resources, setResources] = useState<string[]|null >([]);
@@ -144,6 +147,10 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         setSizeFromChild(data); 
         setSizesFromChild([...sizesFromChild,data])
       };
+      const ritornoSizeFromChild = (data : boolean) =>{
+        setShowSize(data)
+
+      }
       const handleTagFromChild = (data: Tag) => {
         setTagFromChild(data); 
         setTagsFromChild([...tagsFromChild,data])
@@ -250,14 +257,13 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         
       }
       useEffect(() =>{
-        console.log(showMessage)
         if (showMessage === 'true') {
           setShowSize(true);
         } else {
           setShowSize(false);
         }
 
-      },[showMessage])
+      },[])
         useEffect(() =>{
           const fetchColor = async () => {
             try {
@@ -326,7 +332,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       <Breadcrumb pageName="FormElements" />
       {showError && <ModalError message={message} link="/adds/add-products"/>}
       {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/adds/add-products"/>}/> }
-      {showSize && <ModalAllComp component={<AddSize sendSizeToParent={handleSizeFromChild} check={false} link="/adds/add-products" />}/> }
+      {showSize && <ModalAllComp component={<AddSize sendCheckToParent={ritornoSizeFromChild} sendSizeToParent={handleSizeFromChild} check={false} link="/adds/add-products" />}/> }
       {showVariente && <ModalAllComp component={<AddVariente check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
       {showSale && <ModalAllComp component={<AddSale check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
       {showSGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
@@ -503,14 +509,17 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
             </div>
               <MultiSelectSize removeSize={removeSize}  id="multiSelect1" sizes={sizes} sendSizeToParent={handleSizeFromChild}  />
-              
-             { <ButtonDefault
+              <button onClick={() => setShowSize(true)} className="inline-flex items-center  justify-center gap-2.5 text-center font-medium hover:bg-opacity-90 bg-[#253662]  rounded-[5px] w-2/3  text-[#5D87FF] py-[8px]">
+                Size
+                <VscAdd/>
+              </button>
+             {/* <ButtonDefault
               label="Size "
-              link="/adds/add-products/?showMessage=true"
+              link="/adds/add-products/?showSize=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               
-            </ButtonDefault>}
+            </ButtonDefault>*/}
             </div>
         </div>
         {/* <!-- Variente --> */}
@@ -684,10 +693,11 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     </div>}
         
         </div>
-        <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+        
+      </div>
+      <button type="submit" className="flex w-1/3 m-4 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
           Invia
       </button>
-      </div>
 
       </form>
        

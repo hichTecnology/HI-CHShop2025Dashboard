@@ -15,9 +15,10 @@ interface Size {
 interface AddSizesProps {
   link: string;
   check : boolean
+  sendCheckToParent: (data: boolean) => void;
   sendSizeToParent: (data: Size) => void;
 }
-const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
+const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent,sendCheckToParent})=> {
   const route = useRouter()
     const schemaCategory = z.object({
         name : z.string().min(1,{message : ' il nome e obblegatorio '}),
@@ -45,16 +46,18 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
         const data = await response.json()
           reset();
           sendSizeToParent(data)
-          route.push(`${link}`)
+          sendCheckToParent(false)
         } catch (error) {
           
-          route.push(`${link}?showError=true`)
+          sendCheckToParent(false)
         } finally {
           console.log('tutto ok')
         }
     }
   return (
+    
     <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+    
     <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
       <h3 className="font-medium text-dark dark:text-white">
       Aggiunge Misure
