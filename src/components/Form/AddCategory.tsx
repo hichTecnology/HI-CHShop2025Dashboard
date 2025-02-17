@@ -29,7 +29,7 @@ function AddCategory() {
           const requestBody = JSON.stringify(category);
           const response = await fetch(`${apiUrl}/categories`, {
             method: 'POST',
-            mode: 'no-cors',
+            
             headers: { 'Content-Type': 'application/json' },
             body:requestBody
           })

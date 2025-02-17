@@ -6,7 +6,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import Signin from "@/components/Auth/Signin";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,15 +16,15 @@ import ModalError from "@/components/Modal/ModalError";
 import Loader from "@/components/common/Loader";
 import apiUrl from '@/app/api/apiUrl'
 
-type SearchParamProps = {
-  searchParams: Record<string, string> | null | undefined;
-};
-const SignIn = ({ searchParams }: SearchParamProps) => {
+
+const SignIn = () => {
   const router = useRouter();
   const [check, setCheck] = useState<boolean>(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const showError = searchParams?.showError;
+  const searchParam = useSearchParams()
+  const showError = searchParam.get('showError')
+  
   
   const schemaCategory = z.object({
     email : z

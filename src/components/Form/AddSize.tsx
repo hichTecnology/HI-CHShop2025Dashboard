@@ -15,10 +15,10 @@ interface Size {
 interface AddSizesProps {
   link: string;
   check : boolean
-  sendCheckToParent: (data: boolean) => void;
+  
   sendSizeToParent: (data: Size) => void;
 }
-const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent,sendCheckToParent})=> {
+const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
   const route = useRouter()
     const schemaCategory = z.object({
         name : z.string().min(1,{message : ' il nome e obblegatorio '}),
@@ -34,7 +34,7 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent,sendCheck
         const requestBody = JSON.stringify(size);
         const response = await fetch(`${apiUrl}/sizes`, {
           method: 'POST',
-          mode: 'no-cors',
+          
           headers: { 'Content-Type': 'application/json' },
           body:requestBody
         })
@@ -46,18 +46,16 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent,sendCheck
         const data = await response.json()
           reset();
           sendSizeToParent(data)
-          sendCheckToParent(false)
+          route.push(`${link}`)
         } catch (error) {
           
-          sendCheckToParent(false)
+          route.push(`${link}?showError=true`)
         } finally {
           console.log('tutto ok')
         }
     }
   return (
-    
     <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
-    
     <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
       <h3 className="font-medium text-dark dark:text-white">
       Aggiunge Misure

@@ -18,20 +18,21 @@ import AddTag from "@/components/Form/AddTag";
 import ModalAllTag from "@/components/Modal/ModalAllTag";
 import ModalMessage from "@/components/Modal/ModalMessage";
 import withAuth from "@/components/withAuth";
+import { useSearchParams } from "next/navigation";
 
 
-type SearchParamProps = {
-  searchParams: Record<string, string> | null | undefined;
-};
 
 
-const FormLayout = ({ searchParams }: SearchParamProps) => {
-  const show = searchParams?.show;
-  const showCategory = searchParams?.showCategory;
-  const showColor = searchParams?.showColor;
-  const showSize = searchParams?.showSize;
-  const showVariente = searchParams?.showVariente;
-  const showTag = searchParams?.showTag;
+
+const FormLayout = () => {
+  const searchParam = useSearchParams()
+  const show = searchParam.get('show')
+  const showCategory = searchParam.get('showCategory')
+  const showColor = searchParam.get('showColor')
+  const showSize = searchParam.get('showSize')
+  const showVariente = searchParam.get('showVariente')
+  const showTag = searchParam.get('showTag')
+  
   
   
   

@@ -23,7 +23,7 @@ function AddTag() {
           const requestBody = JSON.stringify(size);
           const response = await fetch(`${apiUrl}/tags`, {
             method: 'POST',
-            mode: 'no-cors',
+            
             headers: { 'Content-Type': 'application/json' },
             body:requestBody
           })

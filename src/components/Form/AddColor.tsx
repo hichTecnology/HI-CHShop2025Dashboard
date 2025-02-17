@@ -42,7 +42,7 @@ const AddColor :React.FC<AddColorsProps> = ({ link,check,sendColorToParent}) => 
             const requestBody = JSON.stringify(category);
             const response = await fetch(`${apiUrl}/colors`, {
               method: 'POST',
-              mode: 'no-cors',
+            
               headers: { 'Content-Type': 'application/json' },
               body:requestBody
             })

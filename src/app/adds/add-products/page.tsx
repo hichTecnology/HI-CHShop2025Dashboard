@@ -79,15 +79,15 @@ type SearchParamProps = {
 const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
   const searchParam = useSearchParams()
   const show = searchParam.get('show')
-  console.log(show)
-  //const show = searchParams?.show;
-  const [showSize,setShowSize] = useState<boolean>(false);
-  const showVariente = searchParams?.showVariente;
-  const showSale = searchParams?.showSale;
-  const showSGallery = searchParams?.showGallery;
-  const showError = searchParams?.showError;
-  const showMessage = searchParams?.showMessage;
+  const showVariente = searchParam.get('showVariente')
+  const showSale = searchParam.get('showSale')
+  const showGallery = searchParam.get('showGallery')
+  const showError = searchParam.get('showError')
+  const showMessage = searchParam.get('showMessage')
+  const showSize = searchParam.get('showSize')
   
+  
+
     const [resource, setResource] = useState<string | null>();
     const [message, setMessage] = useState<string>('Error ...');
     const [resources, setResources] = useState<string[]|null >([]);
@@ -147,10 +147,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         setSizeFromChild(data); 
         setSizesFromChild([...sizesFromChild,data])
       };
-      const ritornoSizeFromChild = (data : boolean) =>{
-        setShowSize(data)
-
-      }
+      
       const handleTagFromChild = (data: Tag) => {
         setTagFromChild(data); 
         setTagsFromChild([...tagsFromChild,data])
@@ -256,14 +253,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         }
         
       }
-      useEffect(() =>{
-        if (showMessage === 'true') {
-          setShowSize(true);
-        } else {
-          setShowSize(false);
-        }
-
-      },[])
+      
         useEffect(() =>{
           const fetchColor = async () => {
             try {
@@ -332,10 +322,10 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       <Breadcrumb pageName="FormElements" />
       {showError && <ModalError message={message} link="/adds/add-products"/>}
       {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/adds/add-products"/>}/> }
-      {showSize && <ModalAllComp component={<AddSize sendCheckToParent={ritornoSizeFromChild} sendSizeToParent={handleSizeFromChild} check={false} link="/adds/add-products" />}/> }
+      {showSize && <ModalAllComp component={<AddSize  sendSizeToParent={handleSizeFromChild} check={false} link="/adds/add-products" />}/> }
       {showVariente && <ModalAllComp component={<AddVariente check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
       {showSale && <ModalAllComp component={<AddSale check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
-      {showSGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
+      {showGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
       <form onSubmit={handleSubmit(onSubmit)}></form>
       <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
@@ -509,17 +499,14 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
             </div>
               <MultiSelectSize removeSize={removeSize}  id="multiSelect1" sizes={sizes} sendSizeToParent={handleSizeFromChild}  />
-              <button onClick={() => setShowSize(true)} className="inline-flex items-center  justify-center gap-2.5 text-center font-medium hover:bg-opacity-90 bg-[#253662]  rounded-[5px] w-2/3  text-[#5D87FF] py-[8px]">
-                Size
-                <VscAdd/>
-              </button>
-             {/* <ButtonDefault
+              
+             <ButtonDefault
               label="Size "
               link="/adds/add-products/?showSize=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               
-            </ButtonDefault>*/}
+            </ButtonDefault>
             </div>
         </div>
         {/* <!-- Variente --> */}
