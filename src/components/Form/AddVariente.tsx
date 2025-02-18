@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsCardList } from 'react-icons/bs'
 import { z } from 'zod'
 import apiUrl from '@/app/api/apiUrl'
+import Loader from '../common/Loader'
 interface Variente{
   id : string
   name : string,
@@ -22,7 +23,8 @@ interface AddVarienteProps {
 }
 const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })=> {
   const route = useRouter()
-  const [resource, setResource] = useState<string | null>();
+  const [resource1, setResource1] = useState<string | null>();
+  const [checkPage, setcheckPage] = useState<boolean | null>(false);
   const schemaCategory = z.object({
     name : z.string().min(1,{message : ' il name e obblegatorio '}),
     price : z.coerce.number({
@@ -43,11 +45,14 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
       mode : "onChange",
       resolver : zodResolver(schemaCategory)
   })
+  const handleUploadSuccess = (uploadedImages: string) => {
+      setResource1(uploadedImages)
+  };
   const onSubmit :SubmitHandler<IssinUp> = async (variente) =>{
-            
+            setcheckPage(true)
             const categoryItem = {
               name : variente.name,
-              image : resource,
+              image : resource1,
               price : variente.price,
               stock : variente.stock
             }
@@ -64,21 +69,23 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
               }
               // Handle response if necessary
               const data: Variente = await response.json()
+              setcheckPage(false)
               sendVarienteToParent(data)
               reset();
-              setResource(null)
+              setResource1(null)
               route.push(`/adds/add-products`)
             } catch (error) {
-              // Capture the error message to display to the user
+              setcheckPage(false)
               route.push(`/adds/add-products/?showError=true`)
             } finally {
+              setcheckPage(false)
               console.log('tutto ok')
             }
   }
           
   return (
     <div>
-      <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+    <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
     <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
       <h3 className="font-medium text-dark dark:text-white">
       Aggiunge Variante
@@ -131,7 +138,7 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
       <CldUploadWidget 
             uploadPreset="oorid-frondend"
               onSuccess={(result : any, { widget }) => {
-                setResource(result.info.url)
+                setResource1(result.info.url)
               }}
               onQueuesEnd={(result, { widget }) => {
             widget.close();
@@ -139,21 +146,21 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
           >
             {({ open }) => {
               function handleOnClick() {
-                setResource(undefined);
+                setResource1(undefined);
                 open();
               }
             return (
-          <button  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-4  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+          <div  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-4  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
           onClick={handleOnClick}>
             Immagine
-          </button>
+          </div>
             );
             }}
           </CldUploadWidget>
-          { resource && <CldImage 
+          { resource1 && <CldImage 
             width="150"
             height="150"
-            src={resource }
+            src={resource1 }
             alt="Description of my image"
             />}
       </div>
@@ -161,8 +168,9 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
       
       <div className=" flex justify-between">
       <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-          Invia
+          {checkPage ? <Loader/>:<p>Salva</p>}
       </button>
+      
       {check &&<Link href={'/adds/add-variente/?showVariente=true'}>
       <BsCardList className="  w-12 h-12"/>
       </Link>}

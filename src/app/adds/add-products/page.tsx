@@ -24,6 +24,8 @@ import { useRouter ,useSearchParams } from "next/navigation";
 import ModalError from "@/components/Modal/ModalError";
 import apiUrl from '@/app/api/apiUrl'
 import withAuth from "@/components/withAuth";
+import Loader from "@/components/common/Loader";
+import ModalMessage from "@/components/Modal/ModalMessage";
 
 
 
@@ -93,7 +95,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     const [resources, setResources] = useState<string[]|null >([]);
     const [colors , setColors] = useState<Color[]>([])
     const [varientsFromChild , setVarientsFromChild] = useState<Variente[]>([])
-    
+    const [check , setCheck] = useState<boolean>(false)
     const [sizes , setSizes] = useState<Size[]>([])
     const [tags , setTags] = useState<Tag[]>([])
     const [categories , setCategories] = useState<Category[]>([])
@@ -173,6 +175,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       const idAdmin = localStorage.getItem('id');
       const router = useRouter()
       const onSubmit :SubmitHandler<IssinUp> = async (variente) =>{
+        setCheck(true)
         const IdColors: string[]= []
         const IdSizes: string[]= []
         const IdVarients: string[]= []
@@ -231,7 +234,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
             const requestBody = JSON.stringify(categoryItem);
             const response = await fetch(`${apiUrl}/products`, {
               method: 'POST',
-              mode: 'no-cors',
+              
               headers: { 'Content-Type': 'application/json' },
               body:requestBody
             })
@@ -239,15 +242,17 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               throw new Error('Failed to submit the data. Please try again.')
             }
             // Handle response if necessary
+            setCheck(false)
             const data: Variente = await response.json()
             router.push('/adds/add-products/?showMessage=true')
+            
             reset();
             
           } catch (error) {
-            
+            setCheck(false)
             router.push('/adds/add-products/?showError=true')
           } finally {
-            
+            setCheck(false)
           }
 
         }
@@ -326,7 +331,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       {showVariente && <ModalAllComp component={<AddVariente check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
       {showSale && <ModalAllComp component={<AddSale check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
       {showGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
-      <form onSubmit={handleSubmit(onSubmit)}></form>
+      {showMessage && <ModalMessage  link="/adds/add-products"/>}
       <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
         <div className="flex flex-col col-span-2 gap-9">
@@ -619,9 +624,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               <h3 className="font-medium text-dark dark:text-white">
                 Selezione Tag
               </h3>
-              {tagsFromChild.map((value)=>
-                <p key={value.id}>{value.id}</p>
-              )}
+              
               <div className="flex flex-col gap-5.5 ">
               
             <div>
@@ -682,9 +685,9 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         </div>
         
       </div>
-      <button type="submit" className="flex w-1/3 m-4 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-          Invia
-      </button>
+      {check ? <Loader/>:<button type="submit" className="flex w-1/3 m-4 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+        Invia
+      </button>}
 
       </form>
        

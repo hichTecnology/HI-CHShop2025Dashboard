@@ -48,7 +48,7 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
   }
   return (
     <div>
-      <div className="rounded-[10px] w-[530px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+      <div className="rounded-[10px]  border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
               <h3 className="font-medium text-dark dark:text-white">
                 File upload
@@ -75,7 +75,7 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
                 open();
               }
             return (
-            <div  className='text-white border border-dashed border-1 border-[#5d87ff] grid grid-cols-1 gap-4 content-center  p-5 w-4/4 h-30  m-6 bg-[#253662] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 my-4  dark:bg-[#253662] dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+            <div  className='text-white border border-dashed border-1 border-[#5d87ff] grid grid-cols-1 gap-4 content-center  p-5  h-30  m-6 bg-[#253662] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 my-4  dark:bg-[#253662] dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
               onClick={handleOnClick}>
               <p className=" text-[#5d87ff]"> aggiunge un nuova immagine</p>
             </div>

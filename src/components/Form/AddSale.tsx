@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsCardList } from 'react-icons/bs'
 import { z } from 'zod'
 import flatpickr from 'flatpickr'
 import apiUrl from '@/app/api/apiUrl'
+import Loader from '../common/Loader'
 
 interface Sale{
   id : string
@@ -22,6 +23,7 @@ interface DropdownSaleProps {
 
 const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
   const route = useRouter()
+  const [checkPage , setcheckPage] = useState<boolean>(false)
   useEffect(() => {
       // Init flatpickr
       flatpickr(".form-datepicker", {
@@ -51,7 +53,7 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
           resolver : zodResolver(schemaCategory)
         })
         const onSubmit :SubmitHandler<IssinUp> = async (sale) =>{
-            
+            setcheckPage(true)
             
             try {
               const requestBody = JSON.stringify(sale);
@@ -69,13 +71,14 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
               sendSizeToParent(data)
               reset();
               route.push('/adds/add-products')
-            
+              setcheckPage(false)
         
             } catch (error) {
               // Capture the error message to display to the user
-              
+              setcheckPage(false)
               route.push(`/adds/add-products/?showError=true`)
             } finally {
+              setcheckPage(false)
               route.push('/adds/add-products')
             }
           }
@@ -212,9 +215,9 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
       </div>
       
       <div className=" flex justify-between">
-      <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+      {checkPage ?<Loader/>:<button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
         Invia
-      </button>
+      </button>}
      {  <Link  href={`/?showColor=true`}>
       <BsCardList className="  w-12 h-12"/>
       </Link>
