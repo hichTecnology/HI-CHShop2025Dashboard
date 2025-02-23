@@ -24,10 +24,7 @@ const page = () => {
   const showError = searchParam.get('showError')
   const router = useRouter()
 
-  const handleCheckCancel = (data: boolean) => {
-    setCheckfromCancel(data)
-    
-  };
+  
   const someFunction = async () => {
     if (checkfromCancel) {
       try {
@@ -108,7 +105,7 @@ const page = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Tutti products" />
-      {showError && <ModalError message={message} id={idProd} check={true} sendCheckToParent={handleCheckCancel} link="/products/all-products"/>}
+      {showError && <ModalError message={message} id={idProd} check={true}  link="/products/all-products"/>}
         <div className=' max-w-3xl  bg-white dark:border-stroke-dark dark:bg-gray-dark rounded-xl shadow-md overflow-hidden md:max-w-screen-3xl'>
           <div className="lg:flex ">
             <SidebarProd sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} categories={categories} tags={tags}></SidebarProd>

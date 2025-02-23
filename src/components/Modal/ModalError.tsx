@@ -7,21 +7,16 @@ interface ModalErrorProps{
   message : string
   check : boolean
   id? : string
-  sendCheckToParent?: (data: boolean) => void;
+ 
 }
 
-const ModalError : React.FC<ModalErrorProps> =({link,message,check,sendCheckToParent,id}) => {
+const ModalError : React.FC<ModalErrorProps> =({link,message,check,id}) => {
   const route = useRouter()
   function deleteModal (){
     route.back()
   }
   const someFunction = () => {
-    if (sendCheckToParent) {
-      sendCheckToParent(true);
-
-    } else {
-      console.error("sendCheckToParent is undefined");
-    }
+    
   };
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-999">
