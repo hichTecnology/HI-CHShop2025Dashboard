@@ -42,7 +42,7 @@ const FormLayout = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Form Layout" />
-      {show && <ModalMessage link="/adds/add-variente" />}
+      {show && <ModalMessage link="/products/add-variente" />}
       {showCategory && <ModalAllCategory />}
       {showColor && <ModalAllColor/>}
       {showTag && <ModalAllTag/>}

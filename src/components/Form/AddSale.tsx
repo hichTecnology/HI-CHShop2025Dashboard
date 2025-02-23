@@ -70,16 +70,16 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
               const data = await response.json()
               sendSizeToParent(data)
               reset();
-              route.push('/adds/add-products')
+              route.push('/products/add-products')
               setcheckPage(false)
         
             } catch (error) {
               // Capture the error message to display to the user
               setcheckPage(false)
-              route.push(`/adds/add-products/?showError=true`)
+              route.push(`/products/add-products/?showError=true`)
             } finally {
               setcheckPage(false)
-              route.push('/adds/add-products')
+              route.push('/products/add-products')
             }
           }
   return (

@@ -73,10 +73,10 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
               sendVarienteToParent(data)
               reset();
               setResource1(null)
-              route.push(`/adds/add-products`)
+              route.push(`/products/add-products`)
             } catch (error) {
               setcheckPage(false)
-              route.push(`/adds/add-products/?showError=true`)
+              route.push(`/products/add-products/?showError=true`)
             } finally {
               setcheckPage(false)
               console.log('tutto ok')
@@ -172,7 +172,7 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
           {checkPage ? <Loader/>:<p>Salva</p>}
       </button>
       
-      {check &&<Link href={'/adds/add-variente/?showVariente=true'}>
+      {check &&<Link href={'/products/add-variente/?showVariente=true'}>
       <BsCardList className="  w-12 h-12"/>
       </Link>}
       

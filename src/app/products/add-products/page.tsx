@@ -217,16 +217,16 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         }
         if(!resource){
           setMessage('Aggiunge Imaggine')
-          router.push('/adds/add-products/?showError=true')
+          router.push('/products/add-products/?showError=true')
         }
         else if(!categoryFromChild){
           setMessage('Aggiunge Categoria')
-          router.push('/adds/add-products/?showError=true')
+          router.push('/products/add-products/?showError=true')
 
         }
         else if(IdTags.length == 0){
           setMessage('Aggiunge Tag')
-          router.push('/adds/add-products/?showError=true')
+          router.push('/products/add-products/?showError=true')
 
         }
         else{
@@ -244,13 +244,13 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
             // Handle response if necessary
             setCheck(false)
             const data = await response.json()
-            router.push('/adds/add-products/?showMessage=true')
+            router.push('/products/add-products/?showMessage=true')
             
             reset();
             
           } catch (error) {
             setCheck(false)
-            router.push('/adds/add-products/?showError=true')
+            router.push('/products/add-products/?showError=true')
           } finally {
             setCheck(false)
           }
@@ -325,13 +325,13 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="FormElements" />
-      {showError && <ModalError message={message} link="/adds/add-products"/>}
-      {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/adds/add-products"/>}/> }
-      {showSize && <ModalAllComp component={<AddSize  sendSizeToParent={handleSizeFromChild} check={false} link="/adds/add-products" />}/> }
+      {showError && <ModalError  message={message} check={false} link="/products/add-products"/>}
+      {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/products/add-products"/>}/> }
+      {showSize && <ModalAllComp component={<AddSize  sendSizeToParent={handleSizeFromChild} check={false} link="/products/add-products" />}/> }
       {showVariente && <ModalAllComp component={<AddVariente check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
       {showSale && <ModalAllComp component={<AddSale check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
       {showGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
-      {showMessage && <ModalMessage  link="/adds/add-products"/>}
+      {showMessage && <ModalMessage  link="/products/add-products"/>}
       <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
         <div className="flex flex-col col-span-2 gap-9">
@@ -434,7 +434,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
                 File upload
               </h3>
             </div>
-            <Link href={'/adds/add-products/?showGallery=true'}>
+            <Link href={'/products/add-products/?showGallery=true'}>
             <div  className='text-white border border-dashed border-1 border-[#5d87ff] grid grid-cols-1 gap-4 content-center  p-5 w-4/4 h-30  m-6 bg-[#253662] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 my-4  dark:bg-[#253662] dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
               <p className=" text-[#5d87ff]"> aggiunge un nuova immagine</p>
             </div>
@@ -479,7 +479,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               <MultiSelectColor removeColor={removeColor}  id="multiSelect" colors={colors} sendColorToParent={handleDataFromChild}  />
               <ButtonDefault
               label="Colore"
-              link="/adds/add-products/?show=true"
+              link="/products/add-products/?show=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               <VscAdd/>
@@ -508,7 +508,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
              <ButtonDefault
               label="Size "
-              link="/adds/add-products/?showSize=true"
+              link="/products/add-products/?showSize=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               
@@ -553,7 +553,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
             </div>
               <ButtonDefault
               label="Variente "
-              link="/adds/add-products/?showVariente=true"
+              link="/products/add-products/?showVariente=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               <VscAdd/>
@@ -641,7 +641,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               </h3>
               <ButtonDefault
               label="Aggiunge"
-              link="/adds/add-products/?showSale=true"
+              link="/products/add-products/?showSale=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3 m-4  text-[#5D87FF] py-[8px] "
             ></ButtonDefault>
 

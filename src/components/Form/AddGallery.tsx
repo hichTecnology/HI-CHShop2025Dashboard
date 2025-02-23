@@ -36,7 +36,7 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
       const data = await response.json()
       console.log(data)
       sendGalleryToParent(data)
-      route.push('/adds/add-products')
+      route.push('/products/add-products')
 
        
       } catch (error) {

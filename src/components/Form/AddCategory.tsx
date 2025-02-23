@@ -41,7 +41,7 @@ function AddCategory() {
           // Handle response if necessary
           const data = await response.json()
           reset();
-          route.push(`/adds/add-variente/?show=true`)
+          route.push(`/products/add-variente/?show=true`)
     
         } catch (error) {
           // Capture the error message to display to the user
@@ -79,7 +79,7 @@ function AddCategory() {
               <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
                   Invia
               </button>
-              <Link href={'/adds/add-variente/?showCategory=true'}>
+              <Link href={'/products/add-variente/?showCategory=true'}>
               <BsCardList className="  w-12 h-12"/>
               </Link>
               

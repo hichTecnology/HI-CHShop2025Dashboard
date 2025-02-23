@@ -125,8 +125,9 @@ const menuGroups = [
         label: "Prodotto",
         route: "#",
         children: [
-          { label: "Agg Produtto", route: "/adds/add-products" },
-          { label: "Agg Varie", route: "/adds/add-variente" },
+          { label: "Agg Produtto", route: "/products/add-products" },
+          { label: "Agg Varie", route: "/products/add-variente" },
+          { label: "Tutti Produtto", route: "/products/all-products" },
         ],
       },
       {
