@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineAlignLeft } from 'react-icons/ai'
 
 
-const page : React.FC = () => {
+const page = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [checkfromCancel, setCheckfromCancel] = useState(false);
   const [categories , setCategories] = useState<Category[]>([])
