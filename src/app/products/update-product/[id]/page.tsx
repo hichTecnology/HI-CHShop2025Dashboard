@@ -2,7 +2,7 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import DefaultLayout from '@/components/Layouts/DefaultLaout'
 import React from 'react'
 
-const page : React.FC = () =>  {
+const UpdateProdPage : React.FC = () =>  {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="View products" />
@@ -14,4 +14,4 @@ const page : React.FC = () =>  {
   )
 }
 
-export default page
+export default UpdateProdPage

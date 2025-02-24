@@ -1,4 +1,6 @@
 import { Product } from '@/app/api/modal'
+import { CldImage } from 'next-cloudinary'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -15,7 +17,7 @@ const CardProdAll : React.FC<cartProdAllProps> =({product})=> {
     <div className="w-full h-fit max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
     <div className=' relative'>
     <Link href={`/products/view-product/${product.id}`}>
-        <img className="p-8 rounded-t-lg" src={product.image} alt="product image" />
+        {product && <CldImage height={350} width={350} className="p-8 rounded-t-lg" src={product.image} alt="product image" />}
     </Link>
     <Link href={'/products/all-products/?showError=true'} type="button" className="inline-flex items-center m-2 absolute right-0 top-0 px-2 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-400 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
         Cancella

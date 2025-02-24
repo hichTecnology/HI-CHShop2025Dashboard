@@ -82,7 +82,7 @@ const SignIn = () => {
   return (
   <div className=" p-8">
     <Breadcrumb pageName="Sign In" />
-    {showError && <ModalError message={error} link="/auth/signin"/>}
+    {showError && <ModalError  message={error} link="/auth/signin" check={false}/>}
     <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
     <div className="flex flex-wrap items-center">
       <div className="w-full xl:w-1/2">

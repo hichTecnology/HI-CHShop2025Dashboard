@@ -4,16 +4,17 @@ import { Product } from '@/app/api/modal'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import DataTime from '@/components/DataStats/DataTime'
 import DefaultLayout from '@/components/Layouts/DefaultLaout'
+import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 
 import React, { useEffect, useState } from 'react'
 
-const page  =  ({ params }: { params: { id: string } })  =>  {
+const ViewProdPage  =  ({ params }: { params: { id: string } })  =>  {
   const [product , setProduct] = useState<Product>()
   const router = useRouter()
   const [id, setId] = useState<string | null>(null);
   
-  console.log(params)
+ 
   useEffect(() =>{
     const fetchProducts = async () => {
       const { id } =  params;
@@ -35,7 +36,7 @@ const page  =  ({ params }: { params: { id: string } })  =>  {
     
     
     fetchProducts()
-  },[])
+  },[params])
 
   return (
     <DefaultLayout>
@@ -43,13 +44,28 @@ const page  =  ({ params }: { params: { id: string } })  =>  {
       <div className='bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
         <div className="grid gap-4 p-6">
         <div className=' '>
-            <img className="h-115 w-full rounded-lg" src={product?.image} alt=""/>
-            
+            { product?.image &&
+              < Image 
+                width={512} // Larghezza originale dell'immagine
+                height={320} // Altezza originale dell'immagine
+                layout="responsive"
+                className="h-115 w-full rounded-lg" 
+                src={product?.image} alt=""/>
+            }
         </div>
         <div className="grid grid-cols-5 gap-4">
           {product?.medias.map((value)=>
             <div key={value.id}>
-              <img className="h-auto max-w-full rounded-lg" src={value.url} alt=""/>
+              
+              { value.url &&
+              < Image 
+                width={512} // Larghezza originale dell'immagine
+                height={512} // Altezza originale dell'immagine
+                layout="responsive"
+                className="h-115 w-full rounded-lg" 
+                src={value.url} alt=""/>
+            }
+              
             </div>
           )}
         </div>
@@ -102,7 +118,7 @@ const page  =  ({ params }: { params: { id: string } })  =>  {
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Variante :</h5>
           {product?.varients.map((value)=>
           <div key={value.id} className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
-            <img className="h-28 max-w-28 rounded-lg" src={value.image} alt=""/>
+            <Image width={120} height={120} className="h-28 max-w-28 rounded-lg" src={value.image} alt=""/>
             <span className='flex p-1'><p className='text-base  font-semibold tracking-tight text-gray-900 dark:text-white'>Nome :</p> <p className='font-normal text-base px-2 text-gray-700 dark:text-gray-400'>{product?.name}</p> </span>
             <span className='flex p-1'><p className='text-base  font-semibold tracking-tight text-gray-900 dark:text-white'>Stock :</p> <p className='font-normal text-base px-2 text-gray-700 dark:text-gray-400'>{product?.stock}</p> </span>
             <span className='flex p-1'><p className='text-base  font-semibold tracking-tight text-gray-900 dark:text-white'>Price :</p> <p className='font-normal text-base px-2 text-gray-700 dark:text-gray-400'>{product?.price}</p> </span>
@@ -148,4 +164,4 @@ const page  =  ({ params }: { params: { id: string } })  =>  {
   )
 }
 
-export default page
+export default ViewProdPage

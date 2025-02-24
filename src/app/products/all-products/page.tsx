@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineAlignLeft } from 'react-icons/ai'
 
 
-const page = () => {
+const AllProductPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [checkfromCancel, setCheckfromCancel] = useState(false);
   const [categories , setCategories] = useState<Category[]>([])
@@ -138,4 +138,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AllProductPage
