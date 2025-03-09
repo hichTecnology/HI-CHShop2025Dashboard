@@ -11,7 +11,6 @@ import React, { useEffect, useState } from 'react'
 
 const ViewProdPage  =  ({ params }: { params: { id: string } })  =>  {
   const [product , setProduct] = useState<Product>()
-  const router = useRouter()
   const [id, setId] = useState<string | null>(null);
   
  
@@ -32,9 +31,6 @@ const ViewProdPage  =  ({ params }: { params: { id: string } })  =>  {
         
       } 
     };
-    
-    
-    
     fetchProducts()
   },[params])
 

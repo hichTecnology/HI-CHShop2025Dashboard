@@ -1,3 +1,4 @@
+import apiUrl from '@/app/api/apiUrl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -7,15 +8,45 @@ interface ModalErrorProps{
   message : string
   check : boolean
   id? : string
- 
+  sendConfermParene? : (data : boolean) => void
 }
 
-const ModalError : React.FC<ModalErrorProps> =({link,message,check,id}) => {
-  const route = useRouter()
-  function deleteModal (){
-    route.back()
-  }
-  const someFunction = () => {
+const ModalError : React.FC<ModalErrorProps> =({link,message,check,id,sendConfermParene}) => {
+  const router = useRouter()
+  
+  
+  const someFunction = async () => {
+    try {
+      
+      const response = await fetch(`${apiUrl}/products/${id}`, {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+        
+      })
+      if (!response.ok) {
+        throw new Error('Failed to submit the data. Please try again.')
+      }
+      // Handle response if necessary
+      
+      const data = await response.json()
+      if (sendConfermParene) {
+        sendConfermParene(true);
+        router.refresh()
+      } else {
+        console.error("sendConfermParene is undefined");
+      }
+     
+      router.push(link)
+      
+      
+      
+    } catch (error) {
+      console.log(error)
+      
+    } finally {
+      
+    }
     
   };
   return (

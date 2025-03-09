@@ -7,24 +7,28 @@ import React from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 interface cartProdAllProps{
   product : Product
-  
+  sendIdToParent: (data: string) => void;
 
 }
-const CardProdAll : React.FC<cartProdAllProps> =({product})=> {
+const CardProdAll : React.FC<cartProdAllProps> =({product,sendIdToParent})=> {
     const router = useRouter()
-    
+    const sendIdModalErr =() =>{
+        sendIdToParent(product.id)
+        router.push('/products/all-products/?showError=true')
+
+    }
   return (
     <div className="w-full h-fit max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
     <div className=' relative'>
     <Link href={`/products/view-product/${product.id}`}>
         {product && <CldImage height={350} width={350} className="p-8 rounded-t-lg" src={product.image} alt="product image" />}
     </Link>
-    <Link href={'/products/all-products/?showError=true'} type="button" className="inline-flex items-center m-2 absolute right-0 top-0 px-2 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-400 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+    <button onClick={()=>sendIdModalErr()} type="button" className="inline-flex items-center m-2 absolute right-0 top-0 px-2 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-400 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
         Cancella
         <span className="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
         <AiOutlineClose />
         </span>
-        </Link>
+    </button>
     </div>
     
     <div className="px-5 pb-5">
@@ -53,7 +57,7 @@ const CardProdAll : React.FC<cartProdAllProps> =({product})=> {
         </div>
         <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-gray-900 dark:text-white">{product.price}€</span>
-            <Link href={'/products/update-product/123rd'} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifica</Link>
+            <Link href={`/products/update-product/${product.id}`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifica</Link>
         </div>
     </div>
 </div>

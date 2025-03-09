@@ -19,9 +19,10 @@ interface Sale{
 interface DropdownSaleProps {
   sendSizeToParent: (data: Sale) => void;
   check : boolean
+  link : string
 }
 
-const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
+const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check,link})=> {
   const route = useRouter()
   const [checkPage , setcheckPage] = useState<boolean>(false)
   useEffect(() => {
@@ -70,16 +71,16 @@ const  AddSale : React.FC<DropdownSaleProps>=({sendSizeToParent,check})=> {
               const data = await response.json()
               sendSizeToParent(data)
               reset();
-              route.push('/products/add-products')
+              route.push(`${link}`)
               setcheckPage(false)
         
             } catch (error) {
               // Capture the error message to display to the user
               setcheckPage(false)
-              route.push(`/products/add-products/?showError=true`)
+              route.push(`${link}/?showError=true`)
             } finally {
               setcheckPage(false)
-              route.push('/products/add-products')
+              route.push(`${link}`)
             }
           }
   return (

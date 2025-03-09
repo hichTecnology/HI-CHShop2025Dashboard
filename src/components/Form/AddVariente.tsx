@@ -19,9 +19,10 @@ interface AddVarienteProps {
   
   sendVarienteToParent: (data: Variente) => void;
   check : boolean
+  link: string
   
 }
-const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })=> {
+const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check,link })=> {
   const route = useRouter()
   const [resource1, setResource1] = useState<string | null>();
   const [checkPage, setcheckPage] = useState<boolean | null>(false);
@@ -73,10 +74,10 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check })
               sendVarienteToParent(data)
               reset();
               setResource1(null)
-              route.push(`/products/add-products`)
+              route.push(`${link}`)
             } catch (error) {
               setcheckPage(false)
-              route.push(`/products/add-products/?showError=true`)
+              route.push(`${link}/?showError=true`)
             } finally {
               setcheckPage(false)
               console.log('tutto ok')

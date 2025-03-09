@@ -7,8 +7,7 @@ import { VscAdd } from "react-icons/vsc";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import ModalAllComp from "@/components/Modal/ModalAllComp";
 import AddColor from "@/components/Form/AddColor";
-import MultiSelectColor from "@/components/FormElements/MultiSelest/MultiSelectColor";
-import MultiSelectSize from "@/components/FormElements/MultiSelest/MultiSelectSize";
+
 import AddSize from "@/components/Form/AddSize";
 import AddVariente from "@/components/Form/AddVariente";
 import SelectGroupThree from "@/components/FormElements/SelectGroup/SelectGroupThree";
@@ -157,16 +156,6 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       const handleCategoryFromChild = (data: string) => {
         setCategoryFromChild(data); 
         
-      };
-      
-      const handleUploadSuccess = (uploadedImages: string[]) => {
-        setResources(uploadedImages);
-      };
-      const removeColor = (option: Color) => { 
-        setColorsFromChild(colorsFromChild.filter(item => item.name !== option.name)); 
-      };
-      const removeSize = (option: Size) => { 
-        setSizesFromChild(sizesFromChild.filter(item => item.name !== option.name)); 
       };
       const removeTag = (option: Tag) => { 
         setTagsFromChild(tagsFromChild.filter(item => item.name !== option.name)); 
@@ -328,9 +317,9 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       {showError && <ModalError  message={message} check={false} link="/products/add-products"/>}
       {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/products/add-products"/>}/> }
       {showSize && <ModalAllComp component={<AddSize  sendSizeToParent={handleSizeFromChild} check={false} link="/products/add-products" />}/> }
-      {showVariente && <ModalAllComp component={<AddVariente check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
-      {showSale && <ModalAllComp component={<AddSale check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
-      {showGallery && <ModalAllComp component={<AddGallery sendGalleryToParent={handleGalleryFromChild}  />}/> }
+      {showVariente && <ModalAllComp component={<AddVariente link="/products/add-products" check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
+      {showSale && <ModalAllComp component={<AddSale link="/products/add-products" check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
+      {showGallery && <ModalAllComp component={<AddGallery link="/products/add-products" sendGalleryToParent={handleGalleryFromChild}  />}/> }
       {showMessage && <ModalMessage  link="/products/add-products"/>}
       <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-3">
@@ -476,7 +465,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               )}
               
             </div>
-              <MultiSelectColor removeColor={removeColor}  id="multiSelect" colors={colors} sendColorToParent={handleDataFromChild}  />
+              
               <ButtonDefault
               label="Colore"
               link="/products/add-products/?show=true"
@@ -504,9 +493,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               )}
               
             </div>
-              <MultiSelectSize removeSize={removeSize}  id="multiSelect1" sizes={sizes} sendSizeToParent={handleSizeFromChild}  />
-              
-             <ButtonDefault
+            <ButtonDefault
               label="Size "
               link="/products/add-products/?showSize=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "

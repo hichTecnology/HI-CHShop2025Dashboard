@@ -10,8 +10,9 @@ interface Gallery {
 }
 interface AddGalleryProps {
   sendGalleryToParent: (data: Gallery) => void;
+  link : string
 }
-const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
+const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent,link}) => {
   const route = useRouter()
   const [images, setImages] = useState<string >('');
   const [type, setTypes] = useState<string >('');
@@ -36,7 +37,7 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent}) => {
       const data = await response.json()
       console.log(data)
       sendGalleryToParent(data)
-      route.push('/products/add-products')
+      route.push(`${link}`)
 
        
       } catch (error) {

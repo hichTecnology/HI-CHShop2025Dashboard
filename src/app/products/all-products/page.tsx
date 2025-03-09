@@ -14,6 +14,7 @@ import { AiOutlineAlignLeft } from 'react-icons/ai'
 
 const AllProductPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [conferm, setConferm] = useState(false);
   const [checkfromCancel, setCheckfromCancel] = useState(false);
   const [categories , setCategories] = useState<Category[]>([])
   const [idProd , setIdProd] = useState<string>('')
@@ -24,37 +25,12 @@ const AllProductPage = () => {
   const showError = searchParam.get('showError')
   const router = useRouter()
 
-  
-  const someFunction = async () => {
-    if (checkfromCancel) {
-      try {
-        
-        const response = await fetch(`${apiUrl}/products`, {
-          method: 'DELETE',
-          
-          headers: { 'Content-Type': 'application/json' },
-          
-        })
-        if (!response.ok) {
-          throw new Error('Failed to submit the data. Please try again.')
-        }
-        // Handle response if necessary
-        
-        const data = await response.json()
-        router.push('/products/add-products/?showMessage=true')
-        
-        
-        
-      } catch (error) {
-        
-        router.push('/products/add-products/?showError=true')
-      } finally {
-        
-      }
-    } else {
-      console.error("sendCheckToParent is undefined");
-    }
+  const handleIdFromChild = (data: string) => {
+      setIdProd(data)
   };
+  const handleConfermFromChild = (data: boolean) => {
+    setConferm(data)
+};
   useEffect(() =>{
     const fetchTags = async () => {
       try {
@@ -81,7 +57,6 @@ const AllProductPage = () => {
         console.log(data)
       } catch (error) {
         console.error(error);
-        
       } 
     };
     const fetchCategories = async () => {
@@ -101,11 +76,11 @@ const AllProductPage = () => {
     fetchCategories()
     fetchTags()
     fetchProducts()
-  },[])
+  },[conferm])
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Tutti products" />
-      {showError && <ModalError message={message} id={idProd} check={true}  link="/products/all-products"/>}
+      {showError && <ModalError sendConfermParene={handleConfermFromChild} message={message} id={idProd} check={true}  link="/products/all-products"/>}
         <div className=' max-w-3xl  bg-white dark:border-stroke-dark dark:bg-gray-dark rounded-xl shadow-md overflow-hidden md:max-w-screen-3xl'>
           <div className="lg:flex ">
             <SidebarProd sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} categories={categories} tags={tags}></SidebarProd>
@@ -121,14 +96,8 @@ const AllProductPage = () => {
           <div className=' grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 bg-white dark:border-stroke-dark dark:bg-gray-dark'>
           {products.map((value)=>
             <div key={value.id}>
-              <CardProdAll product={value}></CardProdAll>
-
-            </div>
-            
-          )
-            }
-          
-
+              <CardProdAll sendIdToParent={handleIdFromChild} product={value}></CardProdAll>
+            </div>)}
           </div>
           
         </div>
