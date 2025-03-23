@@ -10,8 +10,6 @@ import AddColor from "@/components/Form/AddColor";
 
 import AddSize from "@/components/Form/AddSize";
 import AddVariente from "@/components/Form/AddVariente";
-import SelectGroupThree from "@/components/FormElements/SelectGroup/SelectGroupThree";
-import MultiSelectTag from "@/components/FormElements/MultiSelest/MultiSelectTag";
 import AddSale from "@/components/Form/AddSale";
 import DataTime from "@/components/DataStats/DataTime";
 import { z } from "zod";
@@ -37,6 +35,7 @@ interface Color {
   id : string
   name: string
   cod : string
+  price : number
   selected: boolean;
   element?: HTMLElement;
 }
@@ -75,6 +74,7 @@ interface Variente {
 interface Size {
   id : string
   name: string
+  price : number
   selected1: boolean;
   element1?: HTMLElement;
 }

@@ -80,6 +80,7 @@ const AllProductPage = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Tutti products" />
+      
       {showError && <ModalError sendConfermParene={handleConfermFromChild} message={message} id={idProd} check={true}  link="/products/all-products"/>}
         <div className=' max-w-3xl  bg-white dark:border-stroke-dark dark:bg-gray-dark rounded-xl shadow-md overflow-hidden md:max-w-screen-3xl'>
           <div className="lg:flex ">

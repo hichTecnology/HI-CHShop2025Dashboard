@@ -10,6 +10,7 @@ export interface Tag {
 export interface Size {
   id: string
   name: string
+  price : number
 }
 
 export interface Media {
@@ -21,6 +22,7 @@ export interface Color {
   id: string
   name: string
   cod: string
+  price : number
 }
 interface Sale{
   id : string

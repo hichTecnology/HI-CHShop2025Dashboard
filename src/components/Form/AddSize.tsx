@@ -9,6 +9,7 @@ import apiUrl from '@/app/api/apiUrl'
 interface Size {
   id: string
   name: string
+  price : number
   selected1: boolean;
   element1?: HTMLElement;
 }
@@ -22,6 +23,12 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
   const route = useRouter()
     const schemaCategory = z.object({
         name : z.string().min(1,{message : ' il nome e obblegatorio '}),
+        price : z.coerce.number({
+              required_error: "Price is required",
+              invalid_type_error: "Price must be a number",
+            })
+            .positive()
+            .min(1, { message: "Price is required" }),
         stock : z.coerce.number({
           required_error: "Stock is required",
           invalid_type_error: "Stock must be a number",
@@ -79,6 +86,20 @@ const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
         />
         {errors.name && <p className=" text-xs text-red-500">{errors.name.message}</p> }
       </div>
+      <div>
+              <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
+                Prezzo
+              <span className=" text-red-500 h-3 w-3 p-1">*</span>
+            </label>
+            <input
+              type="number"
+              step="any"
+              placeholder="Prezzo"
+              {...register('price')}
+              className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            />
+            {errors.price && <p className=" text-xs text-red-500">{errors.price.message}</p> }
+          </div>
       <div>
         <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
           Stock
