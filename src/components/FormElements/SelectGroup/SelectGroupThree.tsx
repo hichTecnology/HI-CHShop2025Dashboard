@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
-interface Category{
-  id : string
+interface Category {
+  id: string
   name: string
-  
+  grado : number
+  children : Category[]
 }
 interface selectGroupProps{
   list : Category[]
-  sendCategoryToParent: (data: string) => void;
+  sendCategoryToParent: (data: Category) => void;
 
 }
 const SelectGroupThree: React.FC<selectGroupProps> = ({list,sendCategoryToParent}) => {
@@ -30,7 +31,7 @@ const SelectGroupThree: React.FC<selectGroupProps> = ({list,sendCategoryToParent
           value={selectedOption}
           onChange={(e) => {
             setSelectedOption(e.target.value);
-            sendCategoryToParent(e.target.value)
+            
             changeTextColor();
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-dark-3 dark:bg-dark-2 dark:focus:border-primary ${
@@ -43,7 +44,7 @@ const SelectGroupThree: React.FC<selectGroupProps> = ({list,sendCategoryToParent
           {list.map((value) =>
           <option key={value.id}
           value={value.id} 
-          className="text-body dark:text-bodydark">
+          className="text-body divide-y py-2 dark:text-bodydark">
           {value.name}
           </option>
 

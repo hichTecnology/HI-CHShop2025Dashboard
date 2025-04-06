@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import apiUrl from '@/app/api/apiUrl'
 
 import React, { useEffect, useState } from 'react'
@@ -8,11 +8,17 @@ import React, { useEffect, useState } from 'react'
 interface Category {
   id: string
   name: string
-  description : string
+  grado : number
+  children : Category[]
+}
+interface CategoriaProps{
+  sendCategoryToParent: (data: Category) => void;
 }
 
- function ModalAllCategory() {
+
+  const ModalAllCategory:React.FC<CategoriaProps> =({sendCategoryToParent})=> {
   const [categories , setCategories] = useState<Category[]>([])
+  const route = useRouter()
   useEffect(() =>{
     const fetchCategories = async () => {
       try {
@@ -22,15 +28,20 @@ interface Category {
         }
         const data: Category[] = await res.json();
         setCategories(data);
-        console.log(data)
+        
       } catch (error) {
         console.error(error);
         
       } 
     };
     fetchCategories()
-  })
-  
+  },[])
+  function addCategory (cate : Category){
+    sendCategoryToParent(cate)
+    route.push('/products/add-variente')
+
+
+  }
   
   
   return (
@@ -41,9 +52,23 @@ interface Category {
         
         <div className=" mt-4">
           <div className=' w-full h-[280px]  border rounded-[10px] border-stroke  dark:border-dark-3 dark:bg-dark-2 pb-4 overflow-auto '>
-          {categories.map((item)=>(
-          <p  key={item.id} className=' w-full h-6 m-4 text-white list-disc text-left list-outside '>{item.name}</p>
-        ))}
+          {categories.map((category) => (
+        <div key={category.id} className="mb-2">
+          {category?.grado <= 1?<h2 onClick={()=>addCategory(category)} className="text-xl font-semibold cursor-pointer text-blue-600 ">{category.name}</h2>:null}
+          {category.children?.length > 0 && (
+            <ul className="">
+              {category.children.map((child) => (
+                <li key={child.id} onClick={()=>addCategory(child)}>
+                  {child.grado == 2?<p className=' text-stone-800 text-lg text-left ml-6'>- {child.name}</p>:
+                  <p className=' '>{child.grado}-{child.name}</p>
+                  }
+                  
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
 
           </div>
         

@@ -22,16 +22,14 @@ interface AddSizesProps {
 const AddSize : React.FC<AddSizesProps> =({link,check,sendSizeToParent})=> {
   const route = useRouter()
     const schemaCategory = z.object({
-        name : z.string().min(1,{message : ' il nome e obblegatorio '}),
-        price : z.coerce.number({
-              required_error: "Price is required",
-              invalid_type_error: "Price must be a number",
-            })
-            .positive()
-            .min(1, { message: "Price is required" }),
-        stock : z.coerce.number({
-          required_error: "Stock is required",
-          invalid_type_error: "Stock must be a number",
+      name : z.string().min(1,{message : ' il nome e obblegatorio '}),
+      price : z.coerce.number({
+        required_error: "Price is required",
+        invalid_type_error: "Price must be a number",
+      }).positive().min(1, { message: "Price is required" }),
+      stock : z.coerce.number({
+        required_error: "Stock is required",
+        invalid_type_error: "Stock must be a number",
         }).int()
       })
     type IssinUp = z.infer<typeof schemaCategory>

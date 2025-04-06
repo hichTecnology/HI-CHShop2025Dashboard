@@ -1,14 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsCardList } from 'react-icons/bs'
 import { z } from 'zod'
 import apiUrl from '@/app/api/apiUrl'
+import Category from '@/app/api/modal'
 
-function AddCategory() {
+interface AddCategory{
+  categoria? : Category
+}
+
+  const AddSubCategory:React.FC<AddCategory> = ({categoria})=> {
   const route = useRouter()
+  const [categoryFromChild, setCategoryFromChild] = useState<Category>();
   const schemaCategory = z.object({
       name : z.string().min(1,{message : ' il nome e obblegatorio '}),
       
@@ -19,11 +25,14 @@ function AddCategory() {
       mode : "onChange",
       resolver : zodResolver(schemaCategory)
     })
+    
     const onSubmit :SubmitHandler<IssinUp> = async (category) =>{
-        
+        console.log(category)
         const categoryItem = {
           name : category.name,
-          grado : 1
+          grado :  (categoria?.grado ?? 0) + 1,
+          parentId : categoria?.id
+
         }
         try {
           const requestBody = JSON.stringify(categoryItem);
@@ -55,10 +64,11 @@ function AddCategory() {
     <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
               <h3 className="font-medium text-dark dark:text-white">
-              Aggiunge Categoria
+              Aggiunge SottoCategoria
               </h3>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5.5 p-6.5">
+              {categoria &&<p>{categoria.name}</p>}
               <div>
                 <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
                   Nome
@@ -79,11 +89,13 @@ function AddCategory() {
               <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
                   Invia
               </button>
+              <Link href={'/products/add-variente/?showCategory=true'}>
+              <BsCardList className="  w-12 h-12"/>
+              </Link>
               </div>
-              
             </form>
       </div>
   )
 }
 
-export default AddCategory
+export default AddSubCategory

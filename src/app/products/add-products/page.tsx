@@ -25,6 +25,9 @@ import apiUrl from '@/app/api/apiUrl'
 import withAuth from "@/components/withAuth";
 import Loader from "@/components/common/Loader";
 import ModalMessage from "@/components/Modal/ModalMessage";
+import AddModel from "@/components/Form/AddModel";
+import { Model } from "@/app/api/modal";
+import SelectCategory from "@/components/FormElements/SelectGroup/SelectCategory";
 
 
 
@@ -38,7 +41,8 @@ interface Color {
 interface Category{
   id : string
   name: string
-  
+  grado : number
+  children : Category[]
 }
 interface Sale{
   id : string
@@ -86,6 +90,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
   const showError = searchParam.get('showError')
   const showMessage = searchParam.get('showMessage')
   const showSize = searchParam.get('showSize')
+  const showModel = searchParam.get('showModel')
   
   
 
@@ -101,7 +106,8 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     const [colorFromChild, setColorFromChild] = useState<Color>(); 
     const [colorsFromChild, setColorsFromChild] = useState<Color[]>([]);
     const [sizeFromChild, setSizeFromChild] = useState<Size>(); 
-    const [categoryFromChild, setCategoryFromChild] = useState<string>(); 
+    const [categoryFromChild, setCategoryFromChild] = useState<Category>(); 
+    const [modelFromChild, setModelFromChild] = useState<Model>(); 
     const [sizesFromChild, setSizesFromChild] = useState<Size[]>([]);
     const [tagsFromChild, setTagsFromChild] = useState<Tag[]>([]);
     const [tagFromChild, setTagFromChild] = useState<Tag>();
@@ -129,7 +135,6 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         mode : "onChange",
         resolver : zodResolver(schemaCategory)
       })
-    
     const handleDataFromChild = (data: Color) => {
       setColorFromChild(data); 
       setColorsFromChild([...colorsFromChild,data])
@@ -153,9 +158,11 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         setTagFromChild(data); 
         setTagsFromChild([...tagsFromChild,data])
       };
-      const handleCategoryFromChild = (data: string) => {
+      const handleModelFromChild = (data: Model) => {
+        setModelFromChild(data); 
+      };
+      const handleCategoryFromChild = (data: Category) => {
         setCategoryFromChild(data); 
-        
       };
       const removeTag = (option: Tag) => { 
         setTagsFromChild(tagsFromChild.filter(item => item.name !== option.name)); 
@@ -184,7 +191,6 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         })
         galleryFromChild.map((value)=>{
           IdImages.push(value.id)
-
         })
         
         const categoryItem = {
@@ -193,7 +199,6 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           description : variente.description,
           price : variente.price,
           stock : variente.stock,
-          model : variente.model,
           category : categoryFromChild,
           admin : idAdmin,
           colors : IdColors,
@@ -201,8 +206,8 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           varients : IdVarients,
           tags : IdTags,
           sale : SaleFromChild?.id,
+          model : modelFromChild?.id,
           medias: IdImages
-
         }
         if(!resource){
           setMessage('Aggiunge Imaggine')
@@ -295,7 +300,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           };
           const fetchCategory = async () => {
             try {
-              const res = await fetch(`${apiUrl}/categories`); // Sostituisci con la tua API
+              const res = await fetch(`${apiUrl}/categories/filter/1`); // Sostituisci con la tua API
               if (!res.ok) {
                 throw new Error('Errore nella risposta dell\'API');
               }
@@ -317,6 +322,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       {showError && <ModalError  message={message} check={false} link="/products/add-products"/>}
       {show && <ModalAllComp component={<AddColor sendColorToParent={handleDataFromChild} check={false} link="/products/add-products"/>}/> }
       {showSize && <ModalAllComp component={<AddSize  sendSizeToParent={handleSizeFromChild} check={false} link="/products/add-products" />}/> }
+      {showModel && <ModalAllComp component={<AddModel sendModelToParent={handleModelFromChild} check={false} link="/products/add-products" list={categories} />}/> }
       {showVariente && <ModalAllComp component={<AddVariente link="/products/add-products" check={false} sendVarienteToParent={handleVarienteFromChild}/>}/> }
       {showSale && <ModalAllComp component={<AddSale link="/products/add-products" check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
       {showGallery && <ModalAllComp component={<AddGallery link="/products/add-products" sendGalleryToParent={handleGalleryFromChild}  />}/> }
@@ -489,16 +495,13 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               </h2>
               {sizesFromChild.map((value)=>
               <span key={value.name}> {value.name}</span>
-
               )}
-              
             </div>
             <ButtonDefault
               label="Size "
               link="/products/add-products/?showSize=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
-              
             </ButtonDefault>
             </div>
         </div>
@@ -541,6 +544,51 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               <ButtonDefault
               label="Variente "
               link="/products/add-products/?showVariente=true"
+              customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
+            >
+              <VscAdd/>
+            </ButtonDefault>
+            </div>
+        </div>
+        {/* <!-- Model --> */}
+        <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
+              <h3 className="font-medium text-dark dark:text-white">
+                Aggiunge Model
+              </h3>
+          </div>
+          <div className="flex flex-col gap-5.5 p-6.5">
+            <div>
+              <h2 className=" block text-body-sm font-medium text-dark dark:text-white"> 
+                Model  aggiunto : {modelFromChild?.name}
+              </h2>
+              {varientsFromChild.map((value) =>
+                <div key={value.id} className=" border border-[#253662] rounded-md">
+                  <div className=" grid grid-cols-2 gap-2 p-2">
+                  { value.image && <CldImage 
+                    width="70"
+                    height="70"
+                    src={value.image }
+                    alt="Description of my image"
+                  />}
+                </div>
+                <div className=" p-2">
+                  <div>
+                  <span className=" text-sm text-gray-400"> price :</span>
+                  <span className=" text-sm text-red-500">{value.price}</span>
+                  </div>
+                  <div>
+                  <span className=" text-sm text-gray-400 my-2 py-2"> stock :</span>
+                  <span className=" text-sm text-cyan-500 my-2 py-2">{value.stock}</span>
+                  </div>
+                  
+                </div>
+                </div>
+              )}
+            </div>
+              <ButtonDefault
+              label="Model "
+              link="/products/add-products/?showModel=true"
               customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
             >
               <VscAdd/>
@@ -603,7 +651,8 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
                 Selezione Categoria
                 
               </h3>
-              <SelectGroupThree sendCategoryToParent={handleCategoryFromChild} list={categories}></SelectGroupThree>
+              {/*<SelectGroupThree sendCategoryToParent={handleCategoryFromChild} list={categories}></SelectGroupThree>*/}
+              <SelectCategory sendCategoryToParent={handleCategoryFromChild} list={categories}></SelectCategory>
             </div>
           </div>
           {/* <!-- Select Tag --> */}

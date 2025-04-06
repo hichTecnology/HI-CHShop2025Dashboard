@@ -1,11 +1,18 @@
 interface Category {
   id: string
   name: string
-  
+  grado : number
+  children : Category[]
 }
 export interface Tag {
   id: string
   name: string
+}
+
+export interface Model {
+  id: string
+  name: string
+  categoryId : string
 }
 export interface Size {
   id: string
