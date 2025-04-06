@@ -49,7 +49,7 @@ const UpdateSize  :React.FC<updateSizeProps> = ({ id,link,sendSizeToParent}) => 
           } 
         };
         fetchProducts()
-      },[])
+      },[id])
       
       
       type IssinUp = z.infer<typeof schemaCategory>

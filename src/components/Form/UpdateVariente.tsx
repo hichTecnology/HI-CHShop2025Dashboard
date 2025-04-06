@@ -49,7 +49,7 @@ const UpdateVariente  :React.FC<updateVarienteProps> = ({ id,link,sendVarienteTo
           } 
         };
         fetchProducts()
-      },[])
+      },[id])
       
       
       type IssinUp = z.infer<typeof schemaCategory>

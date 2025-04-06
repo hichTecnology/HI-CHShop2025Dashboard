@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsCardList } from 'react-icons/bs'
 import { z } from 'zod'
@@ -34,10 +34,11 @@ const UpdateColor  :React.FC<updateColorsProps> = ({ id,link,sendColorToParent})
           invalid_type_error: "Stock must be a number",
         }).int()
       })
+      
       useEffect(() =>{
         const fetchProducts = async () => {
           
-          console.log(id)
+          
           try {
             const res = await fetch(`${apiUrl}/colors/${id}`); // Sostituisci con la tua API
             if (!res.ok) {
@@ -52,7 +53,7 @@ const UpdateColor  :React.FC<updateColorsProps> = ({ id,link,sendColorToParent})
           } 
         };
         fetchProducts()
-      },[])
+      },[id])
       
       
       type IssinUp = z.infer<typeof schemaCategory>

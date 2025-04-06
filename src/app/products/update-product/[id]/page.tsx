@@ -390,7 +390,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           } 
         };
         fetchProducts()
-      },[params,product,checkRef,resource,deleteColor,deleteSize])
+      },[params,product,checkRef,resource])
       
         useEffect(() =>{
           const fetchColor = async () => {

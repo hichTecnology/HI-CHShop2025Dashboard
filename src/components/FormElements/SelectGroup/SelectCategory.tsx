@@ -58,7 +58,7 @@ const SelectCategory:React.FC<CategoriaProps> =({sendCategoryToParent,list}) =>{
               <a href="#" className="flex items-center text-xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                 {cate.name}
               </a>
-              {cate.children.map((value)=>(<ul className=" list-disc ml-2 text-gray-700 dark:text-gray-200">
+              {cate.children.map((value)=>(<ul key={value.id} className=" list-disc ml-2 text-gray-700 dark:text-gray-200">
                   <li onClick={()=>sendCate(value)} key={value.id} className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
                     -  {value.name}
                 </li>
