@@ -163,6 +163,8 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
       };
       const handleCategoryFromChild = (data: Category) => {
         setCategoryFromChild(data); 
+        console.log(categoryFromChild?.id)
+
       };
       const removeTag = (option: Tag) => { 
         setTagsFromChild(tagsFromChild.filter(item => item.name !== option.name)); 
@@ -177,6 +179,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         const IdVarients: string[]= []
         const IdTags: string[]= []
         const IdImages: string[]= []
+        const Idcategories: string[]= []
         colorsFromChild.map((value)=>{
           IdColors.push(value.id)
         })
@@ -193,13 +196,14 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           IdImages.push(value.id)
         })
         
+        
         const categoryItem = {
           name : variente.name,
           image : resource,
           description : variente.description,
           price : variente.price,
           stock : variente.stock,
-          category : categoryFromChild,
+          category : [categoryFromChild?.id],
           admin : idAdmin,
           colors : IdColors,
           sizes : IdSizes,
@@ -213,7 +217,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           setMessage('Aggiunge Imaggine')
           router.push('/products/add-products/?showError=true')
         }
-        else if(!categoryFromChild){
+        else if(!categoryFromChild?.id){
           setMessage('Aggiunge Categoria')
           router.push('/products/add-products/?showError=true')
 
