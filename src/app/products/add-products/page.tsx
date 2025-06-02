@@ -28,6 +28,7 @@ import ModalMessage from "@/components/Modal/ModalMessage";
 import AddModel from "@/components/Form/AddModel";
 import { Model } from "@/app/api/modal";
 import SelectCategory from "@/components/FormElements/SelectGroup/SelectCategory";
+import SelectModel from "@/components/FormElements/SelectGroup/SelectModel";
 
 
 
@@ -101,13 +102,14 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     const [varientsFromChild , setVarientsFromChild] = useState<Variente[]>([])
     const [check , setCheck] = useState<boolean>(false)
     const [sizes , setSizes] = useState<Size[]>([])
+    const [models , setModels] = useState<Model[]>([])
     const [tags , setTags] = useState<Tag[]>([])
     const [categories , setCategories] = useState<Category[]>([])
     const [colorFromChild, setColorFromChild] = useState<Color>(); 
     const [colorsFromChild, setColorsFromChild] = useState<Color[]>([]);
     const [sizeFromChild, setSizeFromChild] = useState<Size>(); 
     const [categoryFromChild, setCategoryFromChild] = useState<Category>(); 
-    const [modelFromChild, setModelFromChild] = useState<Model>(); 
+    const [modelFromChild, setModelFromChild] = useState<Model[]>([]); 
     const [sizesFromChild, setSizesFromChild] = useState<Size[]>([]);
     const [tagsFromChild, setTagsFromChild] = useState<Tag[]>([]);
     const [tagFromChild, setTagFromChild] = useState<Tag>();
@@ -159,12 +161,11 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         setTagsFromChild([...tagsFromChild,data])
       };
       const handleModelFromChild = (data: Model) => {
-        setModelFromChild(data); 
+        setModelFromChild([...modelFromChild,data]); 
       };
       const handleCategoryFromChild = (data: Category) => {
         setCategoryFromChild(data); 
-        console.log(categoryFromChild?.id)
-
+        
       };
       const removeTag = (option: Tag) => { 
         setTagsFromChild(tagsFromChild.filter(item => item.name !== option.name)); 
@@ -179,9 +180,13 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         const IdVarients: string[]= []
         const IdTags: string[]= []
         const IdImages: string[]= []
-        const Idcategories: string[]= []
+        const IdModel: string[]= []
         colorsFromChild.map((value)=>{
           IdColors.push(value.id)
+        })
+        modelFromChild.map((value)=>{
+          IdModel.push(value.id)
+          console.log(value.id)
         })
         sizesFromChild.map((value) =>{
           IdSizes.push(value.id)
@@ -210,8 +215,9 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           varients : IdVarients,
           tags : IdTags,
           sale : SaleFromChild?.id,
-          model : modelFromChild?.id,
+          models : IdModel,
           medias: IdImages
+          
         }
         if(!resource){
           setMessage('Aggiunge Imaggine')
@@ -302,6 +308,21 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
             } 
           };
+          const fetchModel = async () => {
+            try {
+              const res = await fetch(`${apiUrl}/model`); // Sostituisci con la tua API
+              if (!res.ok) {
+                throw new Error('Errore nella risposta dell\'API');
+              }
+              const data1: Model[] = await res.json();
+              setModels(data1);
+
+              
+            } catch (error) {
+              console.error(error);
+              
+            } 
+          };
           const fetchCategory = async () => {
             try {
               const res = await fetch(`${apiUrl}/categories/filter/1`); // Sostituisci con la tua API
@@ -315,11 +336,12 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               
             } 
           };
+          fetchModel()
           fetchColor()
           fetchSize()
           fetchCategory()
           fetchTag()
-        },[sizeFromChild,colorFromChild])
+        },[sizeFromChild,colorFromChild,modelFromChild])
   return (
     <DefaultLayout>
       <Breadcrumb pageName="FormElements" />
@@ -525,11 +547,11 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
                 <div key={value.id} className=" border border-[#253662] rounded-md">
                   <div className=" grid grid-cols-2 gap-2 p-2">
                   { value.image && <CldImage 
-                              width="70"
-                              height="70"
-                              src={value.image }
-                              alt="Description of my image"
-                              />}
+                    width="70"
+                    height="70"
+                    src={value.image }
+                    alt="Description of my image"
+                  />}
                 </div>
                 <div className=" p-2">
                   <div>
@@ -564,7 +586,10 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           <div className="flex flex-col gap-5.5 p-6.5">
             <div>
               <h2 className=" block text-body-sm font-medium text-dark dark:text-white"> 
-                Model  aggiunto : {modelFromChild?.name}
+                Model  aggiunto : 
+                {modelFromChild.map((value) =>(
+                  <p key={value.id}> {value.name}</p>
+                ))}
               </h2>
               {varientsFromChild.map((value) =>
                 <div key={value.id} className=" border border-[#253662] rounded-md">
@@ -590,6 +615,9 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
                 </div>
               )}
             </div>
+            {models.length &&<div>
+              <SelectModel sendCategoryToParent={handleModelFromChild } list={models}></SelectModel>
+            </div>}
               <ButtonDefault
               label="Model "
               link="/products/add-products/?showModel=true"

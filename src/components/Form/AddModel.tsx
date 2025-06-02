@@ -8,6 +8,7 @@ import { BsCardList } from 'react-icons/bs'
 import { z } from 'zod'
 import SelectCategory from '../FormElements/SelectGroup/SelectCategory'
 import { Model } from '@/app/api/modal'
+import SelectModel from '../FormElements/SelectGroup/SelectModel'
 
 interface Category {
   id: string
@@ -19,6 +20,7 @@ interface AddSizesProps {
   link: string
   check : boolean
   list : Category[]
+  
   sendModelToParent: (data: Model) => void
 }
 
@@ -89,6 +91,9 @@ const AddModel: React.FC<AddSizesProps> =({link,check,sendModelToParent,list})=>
       <p>{categoryFromChild?.name}</p>
       <div>
       <SelectCategory sendCategoryToParent={handleCategoryFromChild} list={list}></SelectCategory>
+      </div>
+      <div>
+      
       </div>
       <div className=" flex justify-between">
       <button type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">

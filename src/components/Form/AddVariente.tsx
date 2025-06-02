@@ -53,7 +53,7 @@ const  AddVariente : React.FC<AddVarienteProps> =({sendVarienteToParent,check,li
             setcheckPage(true)
             const categoryItem = {
               name : variente.name,
-              image : resource1,
+              image : resource1 ?? 'image',
               price : variente.price,
               stock : variente.stock
             }
