@@ -33,7 +33,7 @@ const DropdownUser = () => {
     };
     fetchSize()
 
-  },[])
+  },[admin])
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">

@@ -25,7 +25,7 @@ const UpdateVariente  :React.FC<updateVarienteProps> = ({ id,link,sendVarienteTo
         price : z.coerce.number({
           required_error: "Price is required",
           invalid_type_error: "Price must be a number",
-        }).positive().min(1, { message: "Price is required" }),
+        }).min(0, { message: "Price is required" }),
         stock : z.coerce.number({
           required_error: "Stock is required",
           invalid_type_error: "Stock must be a number",
