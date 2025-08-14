@@ -29,6 +29,8 @@ const ModalSupport:React.FC<ModalSupportProps>=({changeIfOpen,lastRequestId,supp
 
 const [lastMessageId, setLastMessageId] = useState<string | null>(null);
 const socketRef = useRef<any>(null);
+const [localLastRequestId, setLocalLastRequestId] = useState(lastRequestId);
+  
 
 
 useEffect(() => {
@@ -37,7 +39,7 @@ useEffect(() => {
       setAdminId(localStorage.getItem('id'));
     }
     console.log("Admin ID:", adminId);
-  }, []);
+  }, [adminId]);
 
 
 
@@ -50,9 +52,9 @@ useEffect(() => {
       const data = await res.json();
       
       setSupportRequest(data); // aggiorna altri dettagli della richiesta
-      if (lastRequestId === supportRequestId) {
+      if (localLastRequestId === supportRequestId) {
       
-        lastRequestId = "";
+        setLocalLastRequestId('');
       }
     } catch (err) {
       console.error("Errore nel recupero della richiesta supporto", err);
@@ -65,7 +67,7 @@ useEffect(() => {
   }
 
   return () => clearInterval(interval);
-}, [supportRequestId, refreshKey, lastMessageId]);
+}, [supportRequestId, refreshKey, lastMessageId,localLastRequestId]);
 
 
   

@@ -42,7 +42,7 @@ const ChatCard = () => {
         let hasNewMessage = false;
         const updatedLastMessageMap = { ...lastMessageMap };
   
-        
+       
   
         setLastMessageMap(updatedLastMessageMap);
         
@@ -64,9 +64,9 @@ const ChatCard = () => {
     const interval = setInterval(fetchSupportRequests, 5000); // ogni 5s
   
     return () => clearInterval(interval);
-  }, [lastMessageMap,link]);
+  }, [lastMessageMap,link,initialized]);
 
-
+  
   const previousPage = async () => {
       if(currentPage)
       if(currentPage > 1){

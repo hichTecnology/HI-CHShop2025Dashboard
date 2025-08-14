@@ -9,12 +9,13 @@ interface ShipmentModalProps {
 }
 
 function ModalShipment({ isOpen, onClose, order }: ShipmentModalProps) {
-  if (!isOpen) return null
   const [formData, setFormData] = useState({
     trackingNumber: '',
     carrier: '',
     status: order?.shipment.status || '',
   });
+  if (!isOpen) return null
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));

@@ -19,6 +19,8 @@ interface updateColorsProps {
 const UpdateColor  :React.FC<updateColorsProps> = ({ id,link,sendColorToParent}) => {
   const route = useRouter()
   const [color,setColor] = useState<Color>()
+  type IssinUp = z.infer<typeof schemaCategory>
+      
   
     const schemaCategory = z.object({
         name : z.string().min(1,{message : ' il nome e obblegatorio '}),
@@ -33,6 +35,11 @@ const UpdateColor  :React.FC<updateColorsProps> = ({ id,link,sendColorToParent})
           required_error: "Stock is required",
           invalid_type_error: "Stock must be a number",
         }).int()
+      })
+      const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
+        mode : "onChange",
+        resolver : zodResolver(schemaCategory),
+        
       })
       
       useEffect(() =>{
@@ -53,15 +60,10 @@ const UpdateColor  :React.FC<updateColorsProps> = ({ id,link,sendColorToParent})
           } 
         };
         fetchProducts()
-      },[id])
+      },[id,reset])
       
       
-      type IssinUp = z.infer<typeof schemaCategory>
-      const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
-        mode : "onChange",
-        resolver : zodResolver(schemaCategory),
-        
-      })
+      
       const onSubmit :SubmitHandler<IssinUp> = async (category) =>{
           
           

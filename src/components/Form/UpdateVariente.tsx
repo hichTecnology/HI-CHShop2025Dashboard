@@ -31,6 +31,12 @@ const UpdateVariente  :React.FC<updateVarienteProps> = ({ id,link,sendVarienteTo
           invalid_type_error: "Stock must be a number",
         }).int()
       })
+      type IssinUp = z.infer<typeof schemaCategory>
+      const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
+        mode : "onChange",
+        resolver : zodResolver(schemaCategory),
+        
+      })
       useEffect(() =>{
         const fetchProducts = async () => {
           
@@ -49,15 +55,10 @@ const UpdateVariente  :React.FC<updateVarienteProps> = ({ id,link,sendVarienteTo
           } 
         };
         fetchProducts()
-      },[id])
+      },[id,reset])
       
       
-      type IssinUp = z.infer<typeof schemaCategory>
-      const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
-        mode : "onChange",
-        resolver : zodResolver(schemaCategory),
-        
-      })
+      
       const onSubmit :SubmitHandler<IssinUp> = async (category) =>{
           
           
