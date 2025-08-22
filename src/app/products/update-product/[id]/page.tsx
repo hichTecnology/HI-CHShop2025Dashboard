@@ -241,11 +241,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           medias: IdImages
         }
         
-        if(!categoryFromChild){
-          setMessage('Aggiunge Categoria')
-          router.push(`/products/update-product/${id}/?showError=true`)
-        }
-        else if(IdTags.length == 0){
+        if(IdTags.length == 0){
           setMessage('Aggiunge Tag')
           router.push(`/products/update-product/${id}/?showError=true`)
         }
