@@ -94,8 +94,8 @@ const ViewProdPage  =  ({ params }: { params: { id: string } })  =>  {
             
         </div>
         <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>Stock :</p> <p className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{product?.stock}</p> </span>
-        <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>Model :</p> <p className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{product?.model}</p> </span>
-        <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>Categoria :</p> <p className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{product?.category.name}</p> </span>
+        <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>numberSerial :</p> <p className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{product?.numberSerial}</p> </span>
+        <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>Categoria :</p> <p className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{product?.category[0].name}</p> </span>
         <span className='flex p-2'><p className='text-xl  font-semibold tracking-tight text-gray-900 dark:text-white'>Tag :</p>{product?.tags.map((value)=><p key={value.id} className='font-normal text-lg px-4 text-gray-700 dark:text-gray-400'>{value.name}</p> )} </span>
         </div>
         <div className="max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
