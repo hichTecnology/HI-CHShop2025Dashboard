@@ -130,7 +130,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           invalid_type_error: "Stock deve essere un numero",
         }).int()
         .positive(),
-        model :z.string().min(1,{message : ' il modelo e obblegatorio '}),
+        numberSerial :z.string().min(1,{message : ' il numberSerial e obblegatorio '}),
       })
       type IssinUp = z.infer<typeof schemaCategory>
         const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
@@ -171,7 +171,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         setTagsFromChild(tagsFromChild.filter(item => item.name !== option.name)); 
       };
 
-      const idAdmin = localStorage.getItem('id');
+      const idAdmin = localStorage.getItem('idAdmin');
       const router = useRouter()
       const onSubmit :SubmitHandler<IssinUp> = async (variente) =>{
         setCheck(true)
@@ -206,6 +206,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           name : variente.name,
           image : resource,
           description : variente.description,
+          numberSerial : variente.numberSerial,
           price : variente.price,
           stock : variente.stock,
           category : [categoryFromChild?.id],
@@ -235,7 +236,10 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
         }
         else{
           try {
+            
+    
             const requestBody = JSON.stringify(categoryItem);
+            
             const response = await fetch(`${apiUrl}/products`, {
               method: 'POST',
               
@@ -434,16 +438,16 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
             </div>
             <div className=''>
               <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
-                Modello
+                Number Serial
                 <span className="text-red">*</span>
               </label>
               <input
                 type='text'
-                placeholder='Modello'
-                {...register('model')}
+                placeholder='Number Serial'
+                {...register('numberSerial')}
                 className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
               />
-              {errors.model && <p className=" text-xs text-red-500">{errors.model.message}</p> }
+              {errors.numberSerial && <p className=" text-xs text-red-500">{errors.numberSerial.message}</p> }
             </div>
             </div>
           </div>

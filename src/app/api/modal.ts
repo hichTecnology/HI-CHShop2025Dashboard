@@ -137,11 +137,12 @@ export interface Product {
   name: string; 
   image: string; 
   description: string; 
+  numberSerial : string;
   price: number; 
   stock: number;
-  model : string;
+  models : Model[];
   medias : Media[]
-  category : Category
+  category : Category[]
   tags : Tag[]
   colors : Color[]
   sizes : Size[]

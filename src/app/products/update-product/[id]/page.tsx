@@ -115,7 +115,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
     const [categoryFromChild, setCategoryFromChild] = useState<string| undefined>(undefined); 
     const [sizesFromChild, setSizesFromChild] = useState<Size[]>([]);
     const [tagsFromChild, setTagsFromChild] = useState<Tag[]>([]);
-    const [tagFromChild, setTagFromChild] = useState<Tag>();
+    const [categoriesFromChild, setcategoriesFromChild] = useState<Category[]>([]);
     const [galleryFromChild, setGalleryFromChild] = useState<Gallery[]>([]);
     const [SaleFromChild, setSaleFromChild] = useState<Sale>();
     const [checkRef,setCheckRef] = useState<boolean>(false)
@@ -130,7 +130,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           required_error: "Stock e obbligatorio",
           invalid_type_error: "Stock deve essere un numero",
         }),
-        model :z.string(),
+        numberSerial :z.string(),
       })
       type IssinUp = z.infer<typeof schemaCategory>
         const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
@@ -188,7 +188,8 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
       
 
 
-      const idAdmin = localStorage.getItem('id');
+      const idAdmin = localStorage.getItem('idAdmin');
+      console.log(idAdmin)
       const router = useRouter()
       const onSubmit :SubmitHandler<IssinUp> = async (variente) =>{
         setCheck(true)
@@ -197,7 +198,10 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
         let IdSizes: string[]= []
         let IdVarients: string[]= []
         let IdTags: string[]= []
+        let IdCategories: string[]= []
         let IdImages: string[]= []
+        let IdModels: string[]= []
+      
         const productColorsIds = product?.colors.map(color => color.id);
         IdColors = [...productColorsIds??[]]
         colorsFromChild.map((value)=>{
@@ -213,6 +217,14 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
         varientsFromChild.map((value) =>{
           IdVarients.push(value.id)
         })
+        if (Array.isArray(product?.category)) {
+          IdCategories = product.category.map(c => c.id);
+        }
+        if (Array.isArray(product?.models)) {
+          IdModels = product.models.map(c => c.id);
+        }
+        
+        
         const productTagsIds = product?.tags.map(tag => tag.id);
         IdTags = [...productTagsIds??[]]
         tagsFromChild.map((value) =>{
@@ -230,12 +242,13 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           description : variente.description ? variente.description :product?.description,
           price : variente.price ?  variente.price : product?.price,
           stock : variente.stock ? variente.stock : product?.stock,
-          model : variente.model ? variente.model : product?.model,
-          category : product?.category,
+          numberSerial : variente.numberSerial ? variente.numberSerial : product?.numberSerial,
           admin : idAdmin,
           colors : IdColors,
           sizes : IdSizes,
+          category : IdCategories,
           varients : IdVarients,
+          models : IdModels,
           tags : IdTags,
           sale : SaleFromChild?.id,
           medias: IdImages
@@ -248,6 +261,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
         else{
           try {
             const requestBody = JSON.stringify(categoryItem);
+            console.log(requestBody + 'questo e il body')
             const response = await fetch(`${apiUrl}/products/${id}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
@@ -381,12 +395,12 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
             setProduct(data)
             
             
-            setCategoryFromChild(product?.category.id)
+            
           } catch (error) {
           } 
         };
         fetchProducts()
-      },[params,product,checkRef,resource])
+      },[checkRef])
       
         useEffect(() =>{
           const fetchColor = async () => {
@@ -544,11 +558,11 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
               </label>
               <input
                 type='text'
-                placeholder={product.model}
-                {...register('model')}
+                placeholder={product.numberSerial}
+                {...register('numberSerial')}
                 className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
               />
-              {errors.model && <p className=" text-xs text-red-500">{errors.model.message}</p> }
+              {errors.numberSerial && <p className=" text-xs text-red-500">{errors.numberSerial.message}</p> }
             </div>
             </div>
           </div>
@@ -762,6 +776,32 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
             </ButtonDefault>
             </div>
         </div>
+        {/* <!-- Model --> */}
+        <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
+              <h3 className="font-medium text-dark dark:text-white">
+                Aggiunge Model
+              </h3>
+          </div>
+          <div className="flex flex-col gap-5.5 p-6.5">
+          <div>
+              <h2 className=" block text-body-sm font-medium text-dark dark:text-white"> 
+              Models:
+              </h2>
+              <div  className="grid grid-cols-2 gap-2" >
+              {product.models.map((value)=>
+              <div key={value.id} className="  bg-gray-100 cursor-pointer text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
+                
+                <span  onClick={()=>modalUpdateSize(value.id)} className="   ">{value.name}</span>
+              </div>
+                
+              )}
+              </div>
+            </div>
+            
+            </div>
+        </div>
+        
         </div>
       </div>
         <div className="flex flex-col gap-9">
@@ -820,7 +860,9 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
               <h3 className="font-medium text-dark dark:text-white">
                 Selezione Categoria
               </h3>
-              <p>{product.category.name}</p>
+              {product.category.map((value)=>
+              <span key={value.id} className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">{value.name}</span>
+              )}
               
             </div>
           </div>

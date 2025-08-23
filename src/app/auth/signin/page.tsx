@@ -64,7 +64,7 @@ const SignIn = () => {
       if (response.status == 200) {
         setCheck(false)
         localStorage.setItem('token', data.access_token); // Salva il token nel localStorage
-        localStorage.setItem('id', data.id);// Salva il id nel localStorage
+        localStorage.setItem('idAdmin', data.id);// Salva il id nel localStorage
         router.push('/'); // Reindirizza al dashboard
       } else {
         setCheck(false)

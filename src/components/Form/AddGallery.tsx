@@ -96,9 +96,10 @@ const AddGallery : React.FC<AddGalleryProps> = ({sendGalleryToParent,link}) => {
                 </div>
               }
             </div>
-            <button onClick={ AddGalleries} type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+            
+            {images.length !=0 &&<button onClick={ AddGalleries} type="submit" className="flex w-1/3 justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
               Invia
-            </button>
+            </button>}
           </div>
         </div>
     </div>
