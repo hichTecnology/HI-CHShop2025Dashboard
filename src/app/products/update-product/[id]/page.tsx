@@ -23,11 +23,12 @@ import apiUrl from '@/app/api/apiUrl'
 import withAuth from "@/components/withAuth";
 import Loader from "@/components/common/Loader";
 import ModalMessage from "@/components/Modal/ModalMessage";
-import { Product } from "@/app/api/modal";
+import { Model, Product } from "@/app/api/modal";
 import { AiOutlineClose } from "react-icons/ai";
 import UpdateColor from "@/components/Form/UpdateColor";
 import UpdateSize from "@/components/Form/UpdateSize";
 import UpdateVariente from "@/components/Form/UpdateVariente";
+import AddModel from "@/components/Form/AddModel";
 
 
 
@@ -42,7 +43,9 @@ interface Color {
 interface Category{
   id : string
   name: string
-  
+  grado : number
+  children : Category[]
+  models : Model[]
 }
 interface Sale{
   id : string
@@ -89,6 +92,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
   const showError = searchParam.get('showError')
   const showMessage = searchParam.get('showMessage')
   const showSize = searchParam.get('showSize')
+  const showModel = searchParam.get('showModel')
 
   const [updateColor,setUpdateColor] = useState<boolean>(false)
   const [updateSize,setUpdateSize] = useState<boolean>(false)
@@ -115,6 +119,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
     const [categoryFromChild, setCategoryFromChild] = useState<string| undefined>(undefined); 
     const [sizesFromChild, setSizesFromChild] = useState<Size[]>([]);
     const [tagsFromChild, setTagsFromChild] = useState<Tag[]>([]);
+    const [modelFromChild, setModelFromChild] = useState<Model[]>([]);
     const [categoriesFromChild, setcategoriesFromChild] = useState<Category[]>([]);
     const [galleryFromChild, setGalleryFromChild] = useState<Gallery[]>([]);
     const [SaleFromChild, setSaleFromChild] = useState<Sale>();
@@ -165,6 +170,9 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
       };
       const handleVarienteModalClose = (data: boolean) => {
         setUpdateVariente(data)
+      };
+      const handleModelFromChild = (data: Model) => {
+        setModelFromChild([...modelFromChild,data]); 
       };
       function modalUpdateColor(id : string){
         setIdColor(id)
@@ -248,7 +256,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           sizes : IdSizes,
           category : IdCategories,
           varients : IdVarients,
-          models : IdModels,
+          models : ["d006c657-0f7f-4c2f-b5b5-ae3863e64947"],
           tags : IdTags,
           sale : SaleFromChild?.id,
           medias: IdImages
@@ -431,6 +439,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
               
             } 
           };
+          
           const fetchTag = async () => {
             try {
               const res = await fetch(`${apiUrl}/tags`); // Sostituisci con la tua API
@@ -445,7 +454,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           };
           const fetchCategory = async () => {
             try {
-              const res = await fetch(`${apiUrl}/categories`); // Sostituisci con la tua API
+              const res = await fetch(`${apiUrl}/categories/filter/1`); // Sostituisci con la tua API
               if (!res.ok) {
                 throw new Error('Errore nella risposta dell\'API');
               }
@@ -470,6 +479,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
       {showSale && <ModalAllComp component={<AddSale link={`/products/update-product/${id}`} check={false}  sendSizeToParent={handleSaleFromChild}/>}/> }
       {showGallery && <ModalAllComp component={<AddGallery link={`/products/update-product/${id}`} sendGalleryToParent={handleGalleryFromChild}  />}/> }
       {showMessage && <ModalMessage  link="/products/update-products"/>}
+      {showModel && <ModalAllComp component={<AddModel sendModelToParent={handleModelFromChild} check={false} link="/products/add-products" list={categories} />}/> }
       {updateColor && <UpdateColor id={idColor} link={`/products/update-product/${id}`} sendColorToParent={handleCloseModal}/>}
       {updateSize && <UpdateSize id={idSize} link={`/products/update-product/${id}`} sendSizeToParent={handleSizeModalClose}/>}
       {updateVariente && <UpdateVariente id={idVariente} link={`/products/update-product/${id}`} sendVarienteToParent={handleVarienteModalClose}/>}
@@ -800,6 +810,13 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
             </div>
             
             </div>
+            <ButtonDefault
+              label="Model "
+              link={`/products/update-product/${id}/?showModel=true`}
+              customClasses="bg-[#253662] rounded-[5px] w-2/3  text-[#5D87FF] py-[8px] "
+            >
+              <VscAdd/>
+            </ButtonDefault>
         </div>
         
         </div>

@@ -15,6 +15,7 @@ interface Category {
   name: string
   grado : number
   children : Category[]
+  models : Model[]
 }
 interface AddSizesProps {
   link: string

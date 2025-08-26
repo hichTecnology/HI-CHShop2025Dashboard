@@ -44,6 +44,7 @@ interface Category{
   name: string
   grado : number
   children : Category[]
+  models : Model[]
 }
 interface Sale{
   id : string
@@ -102,7 +103,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     const [varientsFromChild , setVarientsFromChild] = useState<Variente[]>([])
     const [check , setCheck] = useState<boolean>(false)
     const [sizes , setSizes] = useState<Size[]>([])
-    const [models , setModels] = useState<Model[]>([])
+    const [models , setModels] = useState<Category[]>([])
     const [tags , setTags] = useState<Tag[]>([])
     const [categories , setCategories] = useState<Category[]>([])
     const [colorFromChild, setColorFromChild] = useState<Color>(); 
@@ -314,11 +315,11 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           };
           const fetchModel = async () => {
             try {
-              const res = await fetch(`${apiUrl}/model`); // Sostituisci con la tua API
+              const res = await fetch(`${apiUrl}/categories/filter/1`); // Sostituisci con la tua API
               if (!res.ok) {
                 throw new Error('Errore nella risposta dell\'API');
               }
-              const data1: Model[] = await res.json();
+              const data1: Category[] = await res.json();
               setModels(data1);
 
               

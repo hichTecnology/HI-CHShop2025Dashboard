@@ -4,12 +4,14 @@ import { useRouter } from 'next/navigation'
 import apiUrl from '@/app/api/apiUrl'
 
 import React, { useEffect, useState } from 'react'
+import { Model } from '@/app/api/modal'
 
 interface Category {
   id: string
   name: string
   grado : number
   children : Category[]
+  models : Model[]
 }
 interface CategoriaProps{
   sendCategoryToParent: (data: Category) => void;

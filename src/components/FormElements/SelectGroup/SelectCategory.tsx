@@ -2,12 +2,14 @@ import ClickOutside from '@/components/ClickOutside'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Image from "next/image";
+import { Model } from '@/app/api/modal';
 
 interface Category {
   id: string
   name: string
   grado : number
   children : Category[]
+  models : Model[]
 }
 interface CategoriaProps{
   list : Category[]

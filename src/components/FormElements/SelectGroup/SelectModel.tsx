@@ -2,11 +2,11 @@ import ClickOutside from '@/components/ClickOutside'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Image from "next/image";
-import { Model } from '@/app/api/modal';
+import Category, { Model } from '@/app/api/modal';
 
 
 interface CategoriaProps{
-  list : Model[]
+  list : Category[]
   sendCategoryToParent: (data: Model) => void;
 }
 
@@ -51,9 +51,21 @@ const SelectModel:React.FC<CategoriaProps> =({sendCategoryToParent,list}) =>{
           <ul className="h-48 py-2 overflow-y-auto   text-black dark:text-gray-200" >
             {list.map((cate)=>(
               <li key={cate.id}>
-              <a onClick={()=>sendCate(cate)} className="flex items-center text-xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a className="flex items-center text-xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                 {cate.name}
               </a>
+              {cate.children.map((value)=>(<ul key={value.id} className=" list-disc ml-2 text-gray-700 dark:text-gray-200">
+                  <li  key={value.id} className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ">
+                    -  {value.name}
+                </li>
+                {value.models.map((name,index)=>(<ul key={value.id} className=" list-disc ml-4 text-gray-700 dark:text-gray-200">
+                  <li  key={name.id} onClick={()=>sendCate(name)} className="flex items-center px-4 py-2 hover:bg-gray-100 text-black dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                    {index+1}-  {name.name}
+                </li>
+              </ul>
+            ))}
+              </ul>
+            ))}
               
             </li>
             ))}

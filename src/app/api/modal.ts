@@ -3,6 +3,7 @@ interface Category {
   name: string
   grado : number
   children : Category[]
+  models : Model[]
 }
 export interface Tag {
   id: string
