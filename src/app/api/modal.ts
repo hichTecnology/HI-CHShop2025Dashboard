@@ -141,6 +141,8 @@ export interface Product {
   numberSerial : string;
   price: number; 
   stock: number;
+  battery : number;
+  grade: string;
   models : Model[];
   medias : Media[]
   category : Category[]

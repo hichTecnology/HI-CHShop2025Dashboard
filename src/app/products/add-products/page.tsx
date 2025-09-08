@@ -116,6 +116,7 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
     const [tagFromChild, setTagFromChild] = useState<Tag>();
     const [galleryFromChild, setGalleryFromChild] = useState<Gallery[]>([]);
     const [SaleFromChild, setSaleFromChild] = useState<Sale>();
+    const [grade, setGrade] = useState("Default");
     const schemaCategory = z.object({
         name : z.string().min(1,{message : ' il name e obblegatorio '}),
         
@@ -131,7 +132,12 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           invalid_type_error: "Stock deve essere un numero",
         }).int()
         .positive(),
-        numberSerial :z.string().min(1,{message : ' il numberSerial e obblegatorio '}),
+        battery : z.coerce.number({
+          required_error: "Battery e obbligatorio",
+          invalid_type_error: "Battery deve essere un numero",
+        }).int(),
+        
+        numberSerial :z.string().min(-1,{message : ' il numberSerial e obblegatorio '}),
       })
       type IssinUp = z.infer<typeof schemaCategory>
         const {handleSubmit ,register,reset,formState:{errors}} = useForm<IssinUp>({
@@ -215,6 +221,8 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
           colors : IdColors,
           sizes : IdSizes,
           varients : IdVarients,
+          grade : grade,
+          battery : variente.battery,
           tags : IdTags,
           sale : SaleFromChild?.id,
           models : IdModel,
@@ -450,6 +458,41 @@ const FormElementsPage : React.FC<SearchParamProps> =   ({ searchParams })=> {
               />
               {errors.numberSerial && <p className=" text-xs text-red-500">{errors.numberSerial.message}</p> }
             </div>
+            <div className="grid grid-cols-2 gap-2 ">
+              <div>
+              <p className=" mb-2 block text-body-sm font-medium text-dark dark:text-white">
+              Grado
+              <span className=" text-red-500 h-3 w-3 p-1">*</span>
+            </p>
+            <select
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+              className="border p-2 rounded">
+              <option value="Default">Default</option>
+              <option value="Buono">Buono</option>
+              <option value="Ottimo">Ottimo</option>
+              <option value="Eccellente">Eccellente</option>
+              <option value="Premium">Premium</option>
+            </select>
+
+              </div>
+            
+            <div className=''>
+              <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
+                Battery
+                <span className="text-red">*</span>
+              </label>
+              <input
+                type='number'
+                step="any"
+                placeholder='Battery'
+                {...register('battery')}
+                className="rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+              />
+              {errors.battery && <p className=" text-xs text-red-500">{errors.battery.message}</p> }
+            </div>
+            </div>
+            
             </div>
           </div>
 

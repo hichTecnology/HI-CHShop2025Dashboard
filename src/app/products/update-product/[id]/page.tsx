@@ -124,7 +124,7 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
     const [galleryFromChild, setGalleryFromChild] = useState<Gallery[]>([]);
     const [SaleFromChild, setSaleFromChild] = useState<Sale>();
     const [checkRef,setCheckRef] = useState<boolean>(false)
-    
+    const [grade, setGrade] = useState(product?.grade);
     const schemaCategory = z.object({
         name : z.string(),
         
@@ -135,6 +135,10 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           required_error: "Stock e obbligatorio",
           invalid_type_error: "Stock deve essere un numero",
         }),
+        battery : z.coerce.number({
+          required_error: "Battery e obbligatorio",
+          invalid_type_error: "Battery deve essere un numero",
+        }).int(),
         numberSerial :z.string(),
       })
       type IssinUp = z.infer<typeof schemaCategory>
@@ -254,9 +258,11 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
           admin : idAdmin,
           colors : IdColors,
           sizes : IdSizes,
+          grade : grade ? grade : product?.grade,
+          battery : variente.battery ? variente.battery : product?.battery,
           category : IdCategories,
           varients : IdVarients,
-          models : ["d006c657-0f7f-4c2f-b5b5-ae3863e64947"],
+          models : IdModels,
           tags : IdTags,
           sale : SaleFromChild?.id,
           medias: IdImages
@@ -573,6 +579,41 @@ const UpdateProdPage =   ({ params }: { params: { id: string } })=> {
                 className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
               />
               {errors.numberSerial && <p className=" text-xs text-red-500">{errors.numberSerial.message}</p> }
+            </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 p-2 ">
+              <div>
+              <p className=" mb-2 block text-body-sm font-medium text-dark dark:text-white">
+              Grado
+              <span className=" text-red-500 h-3 w-3 p-1">*</span>
+            </p>
+            <p>{product.grade}</p>
+            <select
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+              className="border p-2 rounded">
+              <option value="Default">Default</option>
+              <option value="Buono">Buono</option>
+              <option value="Ottimo">Ottimo</option>
+              <option value="Eccellente">Eccellente</option>
+              <option value="Premium">Premium</option>
+            </select>
+
+              </div>
+            
+            <div className=''>
+              <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
+                Battery
+                <span className="text-red">*</span>
+              </label>
+              <input
+                type='number'
+                step="any"
+                placeholder={product.battery.toString()}
+                {...register('battery')}
+                className="rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+              />
+              {errors.battery && <p className=" text-xs text-red-500">{errors.battery.message}</p> }
             </div>
             </div>
           </div>
